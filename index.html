@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>הסט הבא</title>
+<meta name="theme-color" content="#121715">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="הסט הבא">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{--bg:#121715;--card:#1c2420;--lime:#cefa69;--white:#f2f5f1;--gray:#a8b4ac;--sage:#c0d0ba;--red:#ff9696;--relevant:#222d1d;--relevant-stroke:#678440;--tray:#171e1b;--tray-stroke:#3a4b32;--chip-stroke:#3e4e42;--week-stroke:#5d723e;--field:#121a14;--field-stroke:#4b5b44;--toast:#2b382a;color-scheme:dark}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--white);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Hebrew",Arial,sans-serif;font-size:16px;line-height:1.35;-webkit-text-size-adjust:100%}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;border:0}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+#app{direction:rtl;text-align:right;max-width:640px;margin:0 auto;padding:calc(25px + env(safe-area-inset-top,0px)) 24px calc(32px + env(safe-area-inset-bottom,0px));min-height:100vh}
+#app.compact{padding-right:16px;padding-left:16px;padding-top:calc(10px + env(safe-area-inset-top,0px))}
+.brand{display:flex;align-items:center;gap:12px}.brand img{width:56px;height:56px;border-radius:14px;flex:none}.brand h1{font-size:28px;font-weight:700;margin:0}
+.sub{color:var(--sage);font-size:15px;line-height:1.4;padding:7px 0;margin-bottom:20px}
+h2{font-size:22px;font-weight:700;margin:0;padding:7px 0;text-wrap:balance}
+.hint{color:var(--gray);font-size:14px;padding:3px 0 8px}
+.btn{display:block;width:100%;border-radius:17px;background:var(--card);color:var(--white);font-size:18px;min-height:62px;padding:15px;margin:6px 0;text-align:center}
+.btn.primary{background:var(--lime);color:var(--bg);font-weight:600}
+.btn.menu{font-size:16px;min-height:54px;padding:10px 12px;margin:4px 0}
+.btn.back{font-size:16px;min-height:44px;height:44px;padding:0 10px;margin:0 0 6px}
+.btn.compact{font-size:14px;min-height:0;padding:0 4px;margin:0}
+.btn.lime{color:var(--lime)}.btn.red{color:var(--red)}
+.btn.pick{font-size:16px}
+.btn:active{transform:translateY(1px)}
+.tray{background:var(--tray);border:1px solid var(--tray-stroke);border-radius:24px;padding:8px;margin:4px 0 10px}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;height:46px;padding:0 18px;border-radius:23px;background:var(--card);border:1px solid var(--chip-stroke);color:var(--white);font-size:16px;white-space:nowrap}
+.chip.active{background:var(--lime);color:var(--bg);border-color:var(--lime);font-weight:600}
+.list{display:flex;flex-direction:column;gap:12px;margin:6px 0}
+.row{display:flex;align-items:stretch;gap:8px}
+.grab{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.exercise{flex:1;min-width:0;background:var(--card);border-radius:17px;padding:14px;min-height:144px;display:flex;flex-direction:column;cursor:pointer}
+.exercise.relevant{background:var(--relevant);box-shadow:inset 0 0 0 1px var(--relevant-stroke)}
+.ex-name{font-size:21px;font-weight:700;padding-bottom:4px;overflow-wrap:anywhere}
+.ex-muscles{font-size:15px;font-weight:700;color:var(--sage)}.ex-muscles.none{color:var(--gray);font-weight:400}
+.ex-weight{font-size:21px;font-weight:700;margin-top:14px}
+.ex-flag{font-size:15px;font-weight:700;color:var(--lime);padding-top:4px}
+.actions{width:82px;flex:none;display:flex;flex-direction:column;gap:4px}.actions .btn{flex:1;display:flex;align-items:center;justify-content:center}
+.actions-inline{flex:none;display:flex;gap:6px;align-items:center}.actions-inline .btn{width:66px;height:46px;display:flex;align-items:center;justify-content:center}
+.item{flex:1;min-width:0;background:var(--card);border-radius:17px;padding:12px 14px;min-height:50px;display:flex;flex-direction:column;justify-content:center;cursor:default}
+.item-name{font-size:18px;font-weight:700;overflow-wrap:anywhere}.item-sub{font-size:14px;color:var(--sage);padding-top:2px}.item-sub.none{color:var(--gray)}
+.drag-clone{position:fixed;z-index:50;pointer-events:none;box-shadow:0 12px 30px rgba(0,0,0,.55);margin:0}
+.footer{color:var(--gray);font-size:14px;padding:14px 0 7px}
+.eyebrow{color:var(--lime);font-size:15px;padding:7px 0}
+.detail-name{font-size:32px;font-weight:700;padding-top:7px;overflow-wrap:anywhere;line-height:1.2}
+.detail-muscles{font-size:16px;font-weight:700;color:var(--sage);padding-top:2px}
+.weight-card{background:var(--card);border-radius:17px;padding:22px;text-align:center}
+.weight-label{color:var(--gray);font-size:16px;padding:7px 0}
+.weight-big{color:var(--lime);font-size:56px;font-weight:700;padding:7px 0;line-height:1.1;direction:ltr}
+.weight-note{font-size:18px;padding:7px 0;overflow-wrap:anywhere}
+.training{padding:18px 0 12px}
+.section-title{font-size:22px;padding:8px 0}.section-sub{font-size:17px;padding:8px 0}
+.options{display:flex;gap:6px}.opt-col{flex:1;min-width:0;display:flex;flex-direction:column}.opt-title{color:var(--gray);font-size:13px;text-align:center;padding:8px 0}
+.opt{width:100%;min-height:52px;border-radius:14px;background:var(--card);border:0;color:var(--white);font-size:16px;text-align:center;text-align-last:center;padding:0 8px;-webkit-appearance:none;appearance:none}
+.set-row{display:flex;align-items:center;gap:10px;margin:6px 0}.set-label{flex:1;font-size:17px}
+.reps{width:120px;height:56px;border-radius:14px;background:var(--field);border:1px solid var(--field-stroke);color:var(--white);font-size:20px;text-align:center;direction:ltr}
+.reps.error,.field.error{border-color:var(--red)}
+.clock{color:var(--lime);font-size:44px;font-weight:700;text-align:center;direction:ltr;padding:8px 0;font-variant-numeric:tabular-nums}
+.week-toggle{font-size:17px;min-height:54px;padding:0;margin:6px 0}
+.week-heading{font-size:23px;padding:10px 0 0}
+.count{display:inline-block;color:var(--lime);font-size:15px;background:var(--card);border-radius:17px;padding:7px 12px;margin:8px 0}
+.days{display:flex;flex-direction:column;gap:6px}
+.day{display:flex;align-items:center;gap:4px;background:var(--card);border-radius:17px;padding:6px 12px;height:54px;cursor:pointer}
+.day.has{box-shadow:inset 0 0 0 1px var(--week-stroke)}.day.today{background:var(--lime);color:var(--bg);box-shadow:none}
+.day-col{width:86px;flex:none}.day-name{font-size:16px;font-weight:700}.day-date{font-size:12px;color:var(--gray);padding-top:2px}.day.today .day-date{color:var(--bg)}
+.day-workout{flex:1;min-width:0;font-size:17px;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:4px}.day-workout.has{color:var(--lime);font-weight:700}.day.today .day-workout{color:var(--bg)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:16px;z-index:100}
+.dialog{background:var(--card);border-radius:17px;width:100%;max-width:420px;max-height:calc(100vh - 32px);overflow:auto;padding:20px;direction:rtl;text-align:right}
+.dialog-title{font-size:20px;font-weight:700;padding-bottom:8px}
+.dialog-message{font-size:17px;color:var(--gray);padding:8px 0}
+.dialog-buttons{display:flex;justify-content:flex-end;gap:4px;padding-top:12px}
+.dbtn{background:transparent;color:var(--lime);font-size:16px;font-weight:600;padding:10px 12px;border-radius:12px;min-height:44px}
+.dbtn.wide{flex:1;height:52px;border-radius:17px;background:var(--bg);color:var(--white);font-weight:400}.dbtn.wide.primary{background:var(--lime);color:var(--bg);font-weight:600}
+.form{display:flex;flex-direction:column;gap:6px;padding:4px 0}.flabel{color:var(--gray);font-size:14px;padding-top:6px}
+.field{width:100%;min-height:50px;border-radius:12px;background:var(--field);border:1px solid var(--field-stroke);color:var(--white);font-size:20px;padding:12px 14px}.field::placeholder,.reps::placeholder{color:var(--gray)}
+.field-error{color:var(--red);font-size:14px}
+.picker-head{display:flex;align-items:center;gap:10px}.picker-title{flex:1;font-size:20px;font-weight:700;text-wrap:balance}
+.rename{flex:none;height:40px;padding:0 12px;border-radius:17px;background:var(--bg);color:var(--lime);font-size:14px}
+.picker-list{max-height:50vh;overflow:auto;display:flex;flex-direction:column;gap:6px;padding:2px 0}
+.option{min-height:48px;border-radius:17px;background:var(--bg);color:var(--white);font-size:16px;padding:8px 14px;text-align:center}.option.on{background:var(--lime);color:var(--bg);font-weight:600}
+.picker-actions{display:flex;gap:10px;padding-top:14px}
+.performed{display:flex;flex-direction:column;gap:8px}.perf-row{display:flex;align-items:center;gap:4px;background:var(--bg);border-radius:17px;padding:10px 12px}.perf-num{width:30px;flex:none;text-align:center;color:var(--lime);font-size:18px;font-weight:700}.perf-col{flex:1;min-width:0}.perf-name{font-size:18px;font-weight:700;overflow-wrap:anywhere}.perf-muscles{font-size:14px;color:var(--sage);padding-top:1px}.perf-muscles.none{color:var(--gray)}
+.backup{margin-top:18px;border-top:1px solid var(--tray-stroke);padding-top:10px}.backup-row{display:flex;gap:8px}.backup-row .btn{flex:1}
+.json{width:100%;height:160px;border-radius:12px;background:var(--field);border:1px solid var(--field-stroke);color:var(--white);font-size:12px;direction:ltr;text-align:left;padding:8px}
+#toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--toast);color:var(--white);padding:12px 18px;border-radius:14px;font-size:15px;max-width:calc(100% - 32px);text-align:center;z-index:200;direction:rtl;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.notice{background:var(--card);border:1px solid var(--relevant-stroke);border-radius:17px;padding:14px;margin:0 0 18px}.notice.warn{border-color:var(--red)}.notice-title{font-size:17px;font-weight:700;color:var(--lime);padding-bottom:4px}.notice.warn .notice-title{color:var(--red)}.notice-text{font-size:15px;line-height:1.45;padding-bottom:6px}.notice .btn{display:inline-block;width:auto;min-height:40px;padding:8px 14px;margin:4px 0 0;background:var(--bg)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app" dir="rtl" lang="he"></div>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+<script>
+(function(){
+'use strict';
+var VERSION='גרסת רשת 2.4';
+var TAGLINE='מתי שמתאים לך. מה שפנוי עכשיו. וגם שני תרגילים זה אימון.';
+var DEFAULT_EXERCISES=["לחיצת חזה","סקוואט","משיכת פולי עליון","חתירה בישיבה","לחיצת כתפיים","כפיפת מרפקים"];
+var DEFAULT_TYPES=["אימון A","אימון B","גוף מלא","מנוחה"];
+var DEFAULT_MUSCLES=["יד קדמית","יד אחורית","חזה","רחב גבי","גב עליון","גב תחתון","כתף קדמית","כתף אחורית","כתף צידית","ארבע ראשי","המסטירנג","ישבן","תאומים","מקרבים"];
+var DAY_LABELS=["ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"];
+var KEY='nextset';
+var S=load();
+var view='home',selected=null,weekOffset=0,ticker=null,suppressClick=false,audio=null,toastTimer=null;
+
+function blank(){return {records:{},deleted:[],exerciseOrder:[],workoutTypes:DEFAULT_TYPES.slice(),workoutDays:{},muscles:{},dayMuscles:{},muscleGroups:DEFAULT_MUSCLES.slice(),increase:{},training:{},performed:{},performedAt:{},timer:{},lastTimerExercise:""};}
+function load(){var s=blank();try{var raw=localStorage.getItem(KEY);if(raw){var parsed=JSON.parse(raw);if(parsed&&typeof parsed==='object')Object.assign(s,parsed);}}catch(e){}return s;}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));return true;}catch(e){toast('השמירה נכשלה. נסה שוב.');return false;}}
+
+function pad(n){return (n<10?'0':'')+n;}
+function dateKey(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function todayKey(){return dateKey(new Date());}
+function sundayOf(d){var c=new Date(d.getFullYear(),d.getMonth(),d.getDate(),12);c.setDate(c.getDate()-c.getDay());return c;}
+function shortDate(d){return d.getDate()+'/'+(d.getMonth()+1);}
+function clamp(v,a,b){v=parseInt(v,10);if(isNaN(v))v=a;return Math.max(a,Math.min(b,v));}
+function secondsLeft(deadline,now){return Math.max(0,Math.min(300,Math.ceil((deadline-now)/1000)));}
+function timeText(s){return pad(Math.floor(s/60))+':'+pad(s%60);}
+function minutes(sec){return sec%60===0?String(sec/60):Math.floor(sec/60)+'.5';}
+function range(a,b,s){var out=[];for(var v=a;v<=b;v+=s)out.push(v);return out;}
+
+function el(tag,props,children){var e=document.createElement(tag);if(props)for(var k in props){var v=props[k];if(v==null)continue;if(k==='class')e.className=v;else if(k==='text')e.textContent=v;else if(k==='dataset')Object.assign(e.dataset,v);else if(k==='style')e.style.cssText=v;else if(k.indexOf('on')===0)e.addEventListener(k.slice(2),v);else e.setAttribute(k,v);}if(children)[].concat(children).forEach(function(c){if(c!=null)e.appendChild(typeof c==='string'?document.createTextNode(c):c);});return e;}
+function btn(label,cls,onClick){return el('button',{class:'btn '+(cls||''),type:'button',text:label,onclick:onClick});}
+function gap(h){return el('div',{style:'height:'+h+'px'});}
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.hidden=true;},2200);}
+function vibrate(p){try{if(navigator.vibrate)navigator.vibrate(p);}catch(e){}}
+function unlockAudio(){try{var C=window.AudioContext||window.webkitAudioContext;if(!C)return;if(!audio)audio=new C();if(audio.state==='suspended')audio.resume();}catch(e){}}
+function beep(){try{if(!audio)return;var t=audio.currentTime;for(var i=0;i<3;i++){var o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=880;g.gain.setValueAtTime(0.0001,t+i*0.35);g.gain.exponentialRampToValueAtTime(0.3,t+i*0.35+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+i*0.35+0.28);o.connect(g);g.connect(audio.destination);o.start(t+i*0.35);o.stop(t+i*0.35+0.3);}}catch(e){}}
+
+function dialog(opts){var overlay=el('div',{class:'overlay'});var box=el('div',{class:'dialog',role:'dialog','aria-modal':'true'});if(opts.title)box.appendChild(el('div',{class:'dialog-title',text:opts.title}));if(opts.body)box.appendChild(opts.body);
+ function close(){overlay.remove();}
+ if(opts.buttons&&opts.buttons.length){var bar=el('div',{class:'dialog-buttons'});opts.buttons.forEach(function(b){bar.appendChild(el('button',{class:'dbtn',type:'button',text:b.label,onclick:function(){if(!b.onClick||b.onClick()!==false)close();}}));});box.appendChild(bar);}
+ overlay.appendChild(box);document.body.appendChild(overlay);
+ if(opts.cancelable!==false)overlay.addEventListener('click',function(e){if(e.target===overlay)close();});
+ return {close:close,box:box};}
+function confirmDialog(title,message,actionLabel,onConfirm){dialog({title:title,body:el('div',{class:'dialog-message',text:message}),buttons:[{label:'ביטול'},{label:actionLabel,onClick:onConfirm}]});}
+function field(hint,value,number){var i=el('input',{class:'field',type:'text',placeholder:hint,value:value||'',autocomplete:'off'});if(number){i.setAttribute('inputmode','decimal');i.style.direction='ltr';i.style.textAlign='center';}return i;}
+function fieldError(input,msg){input.classList.add('error');var e=input.nextSibling;if(!e||!e.classList||!e.classList.contains('field-error')){e=el('div',{class:'field-error'});input.parentNode.insertBefore(e,input.nextSibling);}e.textContent=msg;input.focus();}
+function clearError(input){input.classList.remove('error');var e=input.nextSibling;if(e&&e.classList&&e.classList.contains('field-error'))e.remove();}
+
+function record(name){return S.records[name]||null;}
+function hasWeight(r){return !!r&&r.weight!=null;}
+function weightText(r){return String(r.weight);}
+function exerciseMuscles(r){if(!r)return [];var list=Array.isArray(r.categories)?r.categories:(r.category?[r.category]:[]);return S.muscleGroups.filter(function(g){return list.indexOf(g)>=0;});}
+function muscleNames(list){return S.muscleGroups.filter(function(g){return list.indexOf(g)>=0;}).join(' · ');}
+function applyOrder(visible,saved){var remaining=visible.slice(),out=[];saved.forEach(function(n){var i=remaining.indexOf(n);if(i>=0){out.push(n);remaining.splice(i,1);}});return out.concat(remaining);}
+function renamedList(list,o,n){var out=[];(list||[]).forEach(function(x){var v=x===o?n:x;if(out.indexOf(v)<0)out.push(v);});return out;}
+function targetIndex(centers,cur,y){var t=cur;for(var i=cur+1;i<centers.length;i++)if(y>centers[i])t=i;for(var j=cur-1;j>=0;j--)if(y<centers[j])t=j;return t;}
+function visibleExercises(){var names=DEFAULT_EXERCISES.slice();Object.keys(S.records).forEach(function(n){if(names.indexOf(n)<0)names.push(n);});return applyOrder(names.filter(function(n){return S.deleted.indexOf(n)<0;}),S.exerciseOrder);}
+function isVisible(name){return visibleExercises().indexOf(name)>=0;}
+
+function go(v,opts){view=v;if(opts){if('selected' in opts)selected=opts.selected;if('weekOffset' in opts)weekOffset=opts.weekOffset;}try{history.pushState({view:v,selected:selected,weekOffset:weekOffset},'');}catch(e){}render();window.scrollTo(0,0);}
+function goBack(){if(history.state&&history.state.view&&history.state.view!=='home')history.back();else go('home');}
+window.addEventListener('popstate',function(e){var st=e.state||{view:'home'};view=st.view||'home';selected=st.selected||null;weekOffset=st.weekOffset||0;render();});
+try{history.replaceState({view:'home',selected:null,weekOffset:0},'');}catch(e){}
+
+function render(){if(ticker){clearInterval(ticker);ticker=null;}var app=document.getElementById('app');app.innerHTML='';app.className=(view==='week'||view==='types'||view==='groups')?'compact':'';
+ if(view==='types')renderTypes(app);else if(view==='groups')renderGroups(app);else if(view==='week')renderWeek(app);else{renderBrand(app);if(view==='detail'&&selected&&isVisible(selected))renderDetail(app);else{view='home';renderHome(app);}}}
+function renderBrand(app){app.appendChild(el('div',{class:'brand'},[el('img',{src:'icon-192.png',alt:'לוגו הסט הבא'}),el('h1',{text:'הסט הבא'})]));app.appendChild(el('div',{class:'sub',text:TAGLINE}));}
+
+function renderHome(app){
+ notices(app);
+ workoutBar(app);
+ app.appendChild(el('h2',{text:'איזה תרגיל אתה עושה עכשיו?'}));
+ app.appendChild(btn('חזרה לטיימר האחרון','primary',openLastTimer));
+ app.appendChild(el('div',{class:'hint',text:'לחיצה ארוכה על תרגיל כדי לגרור ולשנות את הסדר'}));
+ var active=S.dayMuscles[todayKey()]||[];var list=el('div',{class:'list'});
+ visibleExercises().forEach(function(name){
+  var r=record(name),groups=exerciseMuscles(r),gtext=muscleNames(groups),relevant=groups.some(function(g){return active.indexOf(g)>=0;}),flagged=!!S.increase[name];
+  var weightLabel=hasWeight(r)?weightText(r)+' ק״ג':'הגדרת משקל';
+  var card=el('div',{class:'exercise grab'+(relevant?' relevant':''),role:'button',tabindex:'0','aria-label':name+(relevant?', מתאים לאימון שנבחר':'')+', '+(gtext||'ללא קבוצת שריר')+', '+weightLabel+(flagged?', לעלות משקל':'')+', לחיצה ארוכה לשינוי מיקום'},[
+   el('div',{class:'ex-name',text:name}),el('div',{class:'ex-muscles'+(gtext?'':' none'),text:gtext||'ללא קבוצת שריר'}),el('div',{class:'ex-weight',text:weightLabel}),flagged?el('div',{class:'ex-flag',text:'↑ לעלות משקל'}):null]);
+  card.addEventListener('click',function(){if(suppressClick)return;go('detail',{selected:name});});
+  card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go('detail',{selected:name});}});
+  var actions=el('div',{class:'actions'},[btn('עריכה','compact lime',function(){exerciseDialog(name,true);}),btn('מחיקה','compact red',function(){deleteExercise(name);})]);
+  list.appendChild(el('div',{class:'row',dataset:{name:name}},[card,actions]));
+ });
+ app.appendChild(list);
+ enableReorder(list,function(order){S.exerciseOrder=order;if(save())toast('הסדר החדש נשמר');});
+ app.appendChild(gap(12));
+ app.appendChild(btn('＋ הוספת תרגיל','primary',function(){exerciseDialog(null,true);}));
+ app.appendChild(el('div',{class:'footer',text:'נשמר בטלפון שלך • עובד גם בלי אינטרנט • '+VERSION}));
+ backupSection(app);
+}
+function workoutBar(app){
+ app.appendChild(el('h2',{text:'איזה אימון עושים היום?'}));
+ var today=S.workoutDays[todayKey()]||'';var chips=el('div',{class:'chips'});
+ if(!S.workoutTypes.length)chips.appendChild(el('div',{class:'hint',style:'padding:6px 10px',text:'אין סוגי אימון. הוסף אחד במסך ״עריכת סוגי אימונים״.'}));
+ S.workoutTypes.forEach(function(type){var active=type===today;chips.appendChild(el('button',{class:'chip'+(active?' active':''),type:'button',text:type,'aria-pressed':String(active),'aria-label':type+(active?', האימון של היום, לחיצה מבטלת':', לחיצה מסמנת להיום'),onclick:function(){chooseToday(type);}}));});
+ app.appendChild(el('div',{class:'tray'},[chips]));
+ app.appendChild(btn('עריכת סוגי אימונים','menu',function(){go('types');}));
+ app.appendChild(btn('עריכת קבוצות שרירים','menu',function(){go('groups');}));
+ app.appendChild(btn('האימונים שלי השבוע · א׳–שבת','menu',function(){go('week',{weekOffset:0});}));
+ app.appendChild(gap(20));
+}
+function chooseToday(type){var t=todayKey(),clearing=S.workoutDays[t]===type;if(clearing){delete S.workoutDays[t];delete S.dayMuscles[t];}else{S.workoutDays[t]=type;S.dayMuscles[t]=(S.muscles[type]||[]).slice();}if(save()){render();toast(clearing?'הבחירה להיום בוטלה':'נבחר להיום: '+type);}}
+function openLastTimer(){var last=S.lastTimerExercise;if(!last){toast('הפעל טיימר בתרגיל כדי שתוכל לחזור אליו מכאן');return;}if(!isVisible(last)){toast('התרגיל של הטיימר האחרון כבר נמחק');return;}go('detail',{selected:last});var t=document.getElementById('timer-block');if(t)t.scrollIntoView({block:'center'});}
+
+function renderDetail(app){
+ var name=selected,r=record(name),gtext=muscleNames(exerciseMuscles(r));
+ app.appendChild(btn('חזרה לכל התרגילים','',goBack));app.appendChild(gap(18));
+ app.appendChild(el('div',{class:'eyebrow',text:'התרגיל שלך עכשיו'}));app.appendChild(el('div',{class:'detail-name',text:name}));
+ if(gtext)app.appendChild(el('div',{class:'detail-muscles',text:gtext}));app.appendChild(gap(15));
+ var card=el('div',{class:'weight-card'},[el('div',{class:'weight-label',text:hasWeight(r)?'המשקל ששמרת לתרגיל':'עדיין לא שמרת משקל לתרגיל'})]);
+ if(hasWeight(r)){card.appendChild(el('div',{class:'weight-big',text:weightText(r)+' ק״ג'}));if(r.note)card.appendChild(el('div',{class:'weight-note',text:r.note}));}
+ app.appendChild(card);
+ app.appendChild(btn(hasWeight(r)?'עדכון משקל':'הגדרת משקל','primary',function(){exerciseDialog(name,false);}));
+ app.appendChild(trainingPanel(name));app.appendChild(gap(18));
+ if(hasWeight(r)){var flagged=!!S.increase[name];app.appendChild(btn(flagged?'✓ לעלות משקל — ביטול הסימון':'＋ העלאת משקל','primary',function(){if(flagged)delete S.increase[name];else S.increase[name]=true;if(save()){render();toast(flagged?'הסימון בוטל':'נוספה תזכורת לעלות משקל');}}));}
+}
+function option(title,value,values,onPick,format){var sel=el('select',{class:'opt','aria-label':title});values.forEach(function(v){sel.appendChild(el('option',{value:String(v),text:format?format(v):String(v)}));});sel.value=String(value);sel.addEventListener('change',function(){onPick(parseInt(sel.value,10));});return el('div',{class:'opt-col'},[el('div',{class:'opt-title',text:title}),sel]);}
+function trainingPanel(name){
+ var cfg=Object.assign({reps:1,rest:30,sets:1},S.training[name]||{});cfg.reps=clamp(cfg.reps,1,30);cfg.rest=clamp(Math.round(cfg.rest/30),1,10)*30;cfg.sets=clamp(cfg.sets,1,4);
+ var panel=el('div',{class:'training'});panel.appendChild(el('div',{class:'section-title',text:'תכנון הסטים'}));
+ var row=el('div',{class:'options'});
+ row.appendChild(option('חזרות',cfg.reps,range(1,30,1),function(v){cfg.reps=v;saveCfg();}));
+ row.appendChild(option('מנוחה בדקות',cfg.rest,range(30,300,30),function(v){cfg.rest=v;saveCfg();if(!deadline())clock.textContent=timeText(cfg.rest);},minutes));
+ row.appendChild(option('סטים',cfg.sets,range(1,4,1),function(v){cfg.sets=v;saveCfg();renderResults();}));
+ panel.appendChild(row);panel.appendChild(el('div',{class:'section-sub',text:'כמה חזרות עשית בכל סט היום?'}));
+ var results=el('div',{class:'results'});panel.appendChild(results);
+ function renderResults(){results.innerHTML='';var day=todayKey();var perf=(S.performed[day]&&S.performed[day][name])||{};for(var i=1;i<=cfg.sets;i++)(function(i){var input=el('input',{class:'reps',type:'text',inputmode:'numeric',maxlength:'3',placeholder:'חזרות','aria-label':'חזרות שבוצעו בסט '+i,value:perf[i]||'',autocomplete:'off'});
+  input.addEventListener('input',function(){var v=input.value.trim();if(v&&!/^\d{1,3}$/.test(v)){input.classList.add('error');return;}input.classList.remove('error');var d=todayKey();if(!S.performed[d])S.performed[d]={};if(!S.performed[d][name])S.performed[d][name]={};if(v)S.performed[d][name][i]=v;else delete S.performed[d][name][i];if(v){if(!S.performedAt[d])S.performedAt[d]={};if(S.performedAt[d][name]==null)S.performedAt[d][name]=Date.now();}save();});
+  results.appendChild(el('div',{class:'set-row'},[el('div',{class:'set-label',text:'סט '+i}),input]));})(i);}
+ renderResults();
+ panel.appendChild(el('div',{class:'section-title',id:'timer-block',text:'טיימר מנוחה'}));
+ var clock=el('div',{class:'clock',text:timeText(cfg.rest)});panel.appendChild(clock);
+ var start=btn('הפעלת טיימר','primary',function(){unlockAudio();S.timer[name]=Date.now()+cfg.rest*1000;S.lastTimerExercise=name;if(save())run();});panel.appendChild(start);
+ panel.appendChild(btn('איפוס טיימר','',function(){delete S.timer[name];if(save()){stop();clock.textContent=timeText(cfg.rest);start.textContent='הפעלת טיימר';}}));
+ function deadline(){return S.timer[name]||0;}
+ function saveCfg(){S.training[name]=Object.assign({},cfg);save();}
+ function tick(){var left=secondsLeft(deadline(),Date.now());clock.textContent=timeText(left);if(left<=0)finish();}
+ function stop(){if(ticker){clearInterval(ticker);ticker=null;}}
+ function run(){stop();if(deadline()-Date.now()<=0){finish();return;}start.textContent='התחלה מחדש';tick();ticker=setInterval(tick,250);}
+ function finish(){stop();delete S.timer[name];save();clock.textContent='00:00';start.textContent='הפעלת טיימר';toast('המנוחה הסתיימה');vibrate([200,100,200]);beep();}
+ if(deadline()>0)run();
+ return panel;
+}
+
+function renderWeek(app){
+ app.appendChild(btn('חזרה לאימון שלי','back',goBack));
+ var first=sundayOf(new Date());first.setDate(first.getDate()+weekOffset*7);var last=new Date(first);last.setDate(last.getDate()+6);var today=todayKey();
+ app.appendChild(btn(weekOffset===0?'לשבוע הקודם':'חזרה לשבוע הנוכחי','primary week-toggle',function(){weekOffset=weekOffset===0?-1:0;render();}));
+ app.appendChild(el('h2',{class:'week-heading',text:weekOffset===0?'האימונים שלי השבוע':'האימונים בשבוע הקודם'}));
+ app.appendChild(el('div',{class:'hint',text:'ראשון עד שבת · '+shortDate(first)+' — '+shortDate(last)}));
+ var logged=0,d=new Date(first);for(var i=0;i<7;i++){if(S.workoutDays[dateKey(d)])logged++;d.setDate(d.getDate()+1);}
+ app.appendChild(el('div',{},[el('span',{class:'count',text:logged+' מתוך 7 ימים עם רישום'})]));
+ var days=el('div',{class:'days'});var day=new Date(first);
+ for(var j=0;j<7;j++)(function(j){var key=dateKey(day),workout=S.workoutDays[key]||'',isToday=key===today,has=!!workout,display=has?workout:(key>today?'עוד לפנינו':'לא נרשם אימון'),dayTitle=DAY_LABELS[j]+' · '+shortDate(day),dateText=shortDate(day);
+  var card=el('div',{class:'day'+(isToday?' today':'')+(has?' has':''),role:'button',tabindex:'0','aria-label':DAY_LABELS[j]+', '+dateText+', '+display},[
+   el('div',{class:'day-col'},[el('div',{class:'day-name',text:DAY_LABELS[j]}),el('div',{class:'day-date',text:dateText+(isToday?' · היום':'')})]),el('div',{class:'day-workout'+(has?' has':''),text:display})]);
+  card.addEventListener('click',function(){showPerformed(key,dayTitle);});card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();showPerformed(key,dayTitle);}});
+  days.appendChild(card);day.setDate(day.getDate()+1);})(j);
+ app.appendChild(days);
+}
+function performedOrdered(day){var perf=S.performed[day]||{};var names=Object.keys(perf).filter(function(n){return Object.keys(perf[n]).some(function(k){var set=parseInt(k,10),reps=parseInt(perf[n][k],10);return set>=1&&set<=4&&reps>0&&reps<=999;});});var at=S.performedAt[day]||{};
+ names.sort(function(a,b){var ta=at[a],tb=at[b];if(ta==null&&tb==null)return a.localeCompare(b,'he');if(ta==null)return 1;if(tb==null)return -1;return (ta-tb)||a.localeCompare(b,'he');});return names;}
+function showPerformed(date,dayTitle){var names=performedOrdered(date);var body=el('div',{class:'performed'});
+ if(!names.length)body.appendChild(el('div',{class:'dialog-message',text:'לא נרשמו תרגילים ביום הזה.'}));
+ else{body.appendChild(el('div',{class:'hint',text:'לפי סדר הביצוע'}));names.forEach(function(n,i){var g=muscleNames(exerciseMuscles(record(n)));body.appendChild(el('div',{class:'perf-row'},[el('div',{class:'perf-num',text:String(i+1)}),el('div',{class:'perf-col'},[el('div',{class:'perf-name',text:n}),el('div',{class:'perf-muscles'+(g?'':' none'),text:g||'לא הוגדרה קבוצת שריר'})])]));});}
+ dialog({title:'התרגילים שבוצעו — '+dayTitle,body:body,buttons:[{label:'סגירה'}]});}
+
+function editorPage(app,o){
+ app.appendChild(btn('חזרה לאימון שלי','back',goBack));
+ app.appendChild(el('h2',{class:'week-heading',text:o.heading}));app.appendChild(el('div',{class:'hint',text:o.hint}));
+ if(!o.items.length)app.appendChild(el('div',{class:'dialog-message',text:o.empty}));
+ var list=el('div',{class:'list'});
+ o.items.forEach(function(item){var sub=o.subtitle?o.subtitle(item):null;
+  var card=el('div',{class:'item grab','aria-label':item+(sub?', '+sub.text:'')+', לחיצה ארוכה לשינוי מיקום'},[el('div',{class:'item-name',text:item}),sub?el('div',{class:'item-sub'+(sub.none?' none':''),text:sub.text}):null]);
+  list.appendChild(el('div',{class:'row',dataset:{name:item}},[card,el('div',{class:'actions-inline'},[btn('עריכה','compact lime',function(){o.onEdit(item);}),btn('מחיקה','compact red',function(){o.onDelete(item);})])]));});
+ app.appendChild(list);enableReorder(list,o.onReorder);
+ app.appendChild(gap(12));app.appendChild(btn(o.addLabel,'primary',o.onAdd));
+}
+function renderTypes(app){editorPage(app,{heading:'סוגי אימון',hint:'לחיצה ארוכה על סוג אימון כדי לגרור ולשנות את הסדר',items:S.workoutTypes,empty:'אין סוגי אימון עדיין. הוסף אחד למטה.',subtitle:function(t){var g=muscleNames(S.muscles[t]||[]);return {text:g||'ללא קבוצות שרירים',none:!g};},onEdit:function(t){chooseWorkout(t,false);},onDelete:deleteType,addLabel:'＋ הוספת סוג אימון',onAdd:addWorkout,onReorder:function(order){S.workoutTypes=order;if(save())toast('הסדר החדש נשמר');}});}
+function renderGroups(app){editorPage(app,{heading:'קבוצות שרירים',hint:'לחיצה ארוכה על קבוצה כדי לגרור ולשנות את הסדר',items:S.muscleGroups,empty:'אין קבוצות שרירים עדיין. הוסף אחת למטה.',subtitle:null,onEdit:renameGroup,onDelete:deleteGroup,addLabel:'＋ הוספת קבוצת שריר',onAdd:addGroup,onReorder:function(order){S.muscleGroups=order;if(save())toast('הסדר החדש נשמר');}});}
+
+function pickMuscles(heading,initial,confirmLabel,rename,onPick){
+ var pending={};initial.forEach(function(g){pending[g]=true;});var root=el('div',{class:'picker'});var d=dialog({body:root,buttons:[]});
+ var head=el('div',{class:'picker-head'},[el('div',{class:'picker-title',text:heading})]);
+ if(rename)head.appendChild(el('button',{class:'rename',type:'button',text:'✎ עריכת שם','aria-label':'עריכת שם האימון',onclick:function(){d.close();rename();}}));
+ root.appendChild(head);root.appendChild(el('div',{class:'hint',text:'לחיצה על קבוצה מסמנת אותה, לחיצה נוספת מבטלת'}));
+ var list=el('div',{class:'picker-list'});if(!S.muscleGroups.length)list.appendChild(el('div',{class:'dialog-message',text:'אין קבוצות שרירים. אפשר להוסיף במסך ״עריכת קבוצות שרירים״.'}));
+ S.muscleGroups.forEach(function(g){var on=!!pending[g];var b=el('button',{class:'option'+(on?' on':''),type:'button',text:(on?'✓ ':'')+g,'aria-pressed':String(on)});b.addEventListener('click',function(){var now=!pending[g];if(now)pending[g]=true;else delete pending[g];b.classList.toggle('on',now);b.textContent=(now?'✓ ':'')+g;b.setAttribute('aria-pressed',String(now));});list.appendChild(b);});
+ root.appendChild(list);
+ root.appendChild(el('div',{class:'picker-actions'},[el('button',{class:'dbtn wide',type:'button',text:'ביטול',onclick:function(){d.close();}}),el('button',{class:'dbtn wide primary',type:'button',text:confirmLabel,onclick:function(){var chosen=S.muscleGroups.filter(function(g){return !!pending[g];});if(onPick(chosen)!==false)d.close();}})]));
+}
+function chooseWorkout(type,add){pickMuscles(type+' — איזה שרירים?',S.muscles[type]||[],add?'הוספה':'שמירה',add?null:function(){renameWorkout(type);},function(chosen){if(add&&S.workoutTypes.indexOf(type)<0)S.workoutTypes.push(type);S.muscles[type]=chosen;var t=todayKey();if(S.workoutDays[t]===type)S.dayMuscles[t]=chosen.slice();if(!save())return false;render();toast(add?'סוג האימון נוסף':'סוג האימון נשמר');return true;});}
+function nameDialog(title,hint,value,maxLen,actionLabel,onSave){var input=field(hint,value,false);dialog({title:title,body:el('div',{class:'form'},[input]),buttons:[{label:'ביטול'},{label:actionLabel,onClick:function(){clearError(input);var v=input.value.trim();if(!v||v.length>maxLen){fieldError(input,'יש להזין שם עד '+maxLen+' תווים');return false;}return onSave(v,input);}}]});setTimeout(function(){input.focus();},50);}
+function renameWorkout(existing){nameDialog('עריכת שם האימון','שם האימון',existing,60,'שמירה',function(name,input){if(name===existing){setTimeout(function(){chooseWorkout(existing,false);},0);return;}if(S.workoutTypes.indexOf(name)>=0){fieldError(input,'כבר קיים אימון בשם הזה');return false;}
+ S.workoutTypes=renamedList(S.workoutTypes,existing,name);if(S.muscles[existing]){S.muscles[name]=S.muscles[existing];delete S.muscles[existing];}var t=todayKey();if(S.workoutDays[t]===existing)S.workoutDays[t]=name;if(!save())return false;render();setTimeout(function(){chooseWorkout(name,false);},0);});}
+function addWorkout(){nameDialog('סוג אימון חדש','למשל, גב ויד קדמית','',60,'הוספה',function(type,input){if(S.workoutTypes.indexOf(type)>=0){fieldError(input,'סוג האימון כבר קיים');return false;}setTimeout(function(){chooseWorkout(type,true);},0);});}
+function deleteType(type){confirmDialog('מחיקת ״'+type+'״','סוג האימון יוסר מהרשימה. אימונים שכבר נרשמו ביומן יישמרו.','מחיקה',function(){S.workoutTypes=S.workoutTypes.filter(function(t){return t!==type;});if(save()){render();toast('סוג האימון נמחק');}});}
+function addGroup(){nameDialog('קבוצת שריר חדשה','למשל, טרפז','',40,'הוספה',function(g,input){if(S.muscleGroups.indexOf(g)>=0){fieldError(input,'קבוצת השריר כבר קיימת');return false;}S.muscleGroups.push(g);if(!save())return false;render();toast('קבוצת השריר נוספה');});}
+function renameGroup(existing){nameDialog('עריכת קבוצת שריר','שם קבוצת השריר',existing,40,'שמירה',function(g,input){if(g===existing)return;if(S.muscleGroups.indexOf(g)>=0){fieldError(input,'קבוצת השריר כבר קיימת');return false;}
+ S.muscleGroups=renamedList(S.muscleGroups,existing,g);Object.keys(S.records).forEach(function(n){var r=S.records[n];if(Array.isArray(r.categories))r.categories=renamedList(r.categories,existing,g);if(r.category===existing)r.category=g;});Object.keys(S.muscles).forEach(function(t){S.muscles[t]=renamedList(S.muscles[t],existing,g);});Object.keys(S.dayMuscles).forEach(function(d){S.dayMuscles[d]=renamedList(S.dayMuscles[d],existing,g);});
+ if(!save())return false;render();toast('קבוצת השריר עודכנה בכל התרגילים והאימונים');});}
+function deleteGroup(g){confirmDialog('מחיקת ״'+g+'״','קבוצת השריר תוסר מהרשימה ולא תוצג יותר בתרגילים ובאימונים.','מחיקה',function(){S.muscleGroups=S.muscleGroups.filter(function(x){return x!==g;});if(save()){render();toast('קבוצת השריר נמחקה');}});}
+
+function exerciseDialog(existing,editFields){
+ var old=existing?record(existing):null;var form=el('div',{class:'form'});
+ var nameInput=field('שם התרגיל',existing||'',false);if(editFields){form.appendChild(el('div',{class:'flabel',text:'שם התרגיל'}));form.appendChild(nameInput);}
+ var selectedMuscles=exerciseMuscles(old).slice();var catBtn=null;
+ if(editFields){form.appendChild(el('div',{class:'flabel',text:'קבוצות שרירים — אפשר לבחור כמה'}));catBtn=btn(selectedMuscles.length?muscleNames(selectedMuscles):'בחירת קבוצות שרירים','pick',function(){pickMuscles('קבוצות השרירים של התרגיל',selectedMuscles,'בחירה',null,function(chosen){selectedMuscles=chosen.slice();catBtn.textContent=chosen.length?muscleNames(chosen):'בחירת קבוצות שרירים';return true;});});form.appendChild(catBtn);}
+ form.appendChild(el('div',{class:'flabel',text:'משקל בק״ג'}));var amount=field('למשל 20',hasWeight(old)?weightText(old):'',true);form.appendChild(amount);
+ form.appendChild(el('div',{class:'flabel',text:'הערה — לא חובה'}));var note=field('למשל, לכל יד או כולל המוט',old?(old.note||''):'',false);form.appendChild(note);
+ dialog({title:!existing?'תרגיל חדש':(editFields?'עריכת תרגיל':'עדכון משקל'),body:form,buttons:[{label:'ביטול'},{label:'שמירה',onClick:function(){
+  clearError(nameInput);clearError(amount);clearError(note);
+  var n=nameInput.value.trim(),raw=amount.value.trim().replace(',','.'),w=null;
+  if(raw){w=Number(raw);if(!isFinite(w)){fieldError(amount,'יש להזין משקל תקין');return false;}if(w<0||w>2000){fieldError(amount,'משקל בין 0 ל־2,000 ק״ג');return false;}}
+  else if(!editFields||hasWeight(old)){fieldError(amount,'יש להזין משקל');return false;}
+  if(!n||n.length>80){fieldError(nameInput,'יש להזין שם תרגיל עד 80 תווים');return false;}
+  if(n!==existing&&(S.records[n]||(DEFAULT_EXERCISES.indexOf(n)>=0&&S.deleted.indexOf(n)<0))){fieldError(nameInput,'כבר קיים תרגיל בשם הזה');return false;}
+  if(note.value.length>160){fieldError(note,'עד 160 תווים');return false;}
+  var value=Object.assign({},old||{});value.weight=w;value.note=note.value.trim();value.categories=selectedMuscles.slice();value.category=selectedMuscles[0]||'';
+  var flagKey=existing||n;var keepFlag=!!S.increase[flagKey]&&(!hasWeight(old)||w==null||w<=old.weight);
+  if(existing&&existing!==n)renameExercise(existing,n);
+  S.records[n]=value;S.deleted=S.deleted.filter(function(x){return x!==n;});if(keepFlag)S.increase[n]=true;else delete S.increase[n];
+  if(!save())return false;
+  if(editFields&&existing){if(view==='detail')go('home');else render();}else if(view==='detail'){selected=n;render();}else go('detail',{selected:n});
+  toast('התרגיל נשמר');}}]});
+ setTimeout(function(){(editFields?nameInput:amount).focus();},50);
+}
+function renameExercise(o,n){delete S.records[o];if(S.deleted.indexOf(o)<0)S.deleted.push(o);
+ if(S.training[o]){S.training[n]=S.training[o];delete S.training[o];}
+ Object.keys(S.performed).forEach(function(d){var p=S.performed[d];if(p[o]){p[n]=p[o];delete p[o];}});
+ Object.keys(S.performedAt).forEach(function(d){var p=S.performedAt[d];if(p[o]!=null){p[n]=p[o];delete p[o];}});
+ if(S.timer[o]){S.timer[n]=S.timer[o];delete S.timer[o];}
+ if(S.increase[o]){S.increase[n]=true;delete S.increase[o];}
+ S.exerciseOrder=renamedList(S.exerciseOrder,o,n);if(S.lastTimerExercise===o)S.lastTimerExercise=n;}
+function deleteExercise(name){confirmDialog('מחיקת תרגיל','למחוק את ״'+name+'״ ואת המשקל ששמרת?','מחיקה',function(){delete S.records[name];if(S.deleted.indexOf(name)<0)S.deleted.push(name);delete S.increase[name];if(S.lastTimerExercise===name)S.lastTimerExercise='';if(save()){if(view==='detail')go('home');else render();toast('התרגיל נמחק');}});}
+
+function enableReorder(list,onSave){
+ var timer=null,sx=0,sy=0,dragging=null,clone=null,ox=0,oy=0,lastY=0,startOrder=null,auto=0,raf=null;
+ function rows(){return Array.prototype.slice.call(list.children);}
+ function press(x,y,row){sx=x;sy=y;clearTimeout(timer);timer=setTimeout(function(){timer=null;begin(row,x,y);},450);}
+ function begin(row,x,y){if(rows().length<2){toast('צריך לפחות שני פריטים כדי לשנות סדר');return;}dragging=row;startOrder=rows().map(function(r){return r.dataset.name;});var b=row.getBoundingClientRect();ox=x-b.left;oy=y-b.top;clone=row.cloneNode(true);clone.classList.add('drag-clone');clone.style.width=b.width+'px';clone.style.height=b.height+'px';clone.style.left=b.left+'px';clone.style.top=b.top+'px';document.body.appendChild(clone);suppressClick=true;lastY=y;vibrate(30);}
+ function move(x,y,e){if(timer){if(Math.abs(x-sx)>8||Math.abs(y-sy)>8){clearTimeout(timer);timer=null;}return;}if(!dragging)return;if(e&&e.cancelable)e.preventDefault();lastY=y;clone.style.left=(x-ox)+'px';clone.style.top=(y-oy)+'px';shift(y);var edge=90;auto=y<edge?-7:(y>window.innerHeight-edge?7:0);if(auto&&!raf)raf=requestAnimationFrame(step);}
+ function step(){raf=null;if(!dragging||!auto)return;window.scrollBy(0,auto);shift(lastY);raf=requestAnimationFrame(step);}
+ function shift(y){var rs=rows();var cur=rs.indexOf(dragging);if(cur<0)return;var centers=rs.map(function(r){var b=r.getBoundingClientRect();return (b.top+b.bottom)/2;});var t=targetIndex(centers,cur,y);if(t===cur)return;if(t>cur)list.insertBefore(dragging,rs[t].nextSibling);else list.insertBefore(dragging,rs[t]);}
+ function end(){if(timer){clearTimeout(timer);timer=null;}if(!dragging)return;var order=rows().map(function(r){return r.dataset.name;});dragging=null;auto=0;if(raf){cancelAnimationFrame(raf);raf=null;}if(clone){clone.remove();clone=null;}setTimeout(function(){suppressClick=false;},80);if(JSON.stringify(order)!==JSON.stringify(startOrder))onSave(order);}
+ list.addEventListener('touchstart',function(e){if(e.touches.length!==1)return;var grab=e.target.closest('.grab'),row=e.target.closest('[data-name]');if(!grab||!row||!list.contains(row))return;press(e.touches[0].clientX,e.touches[0].clientY,row);},{passive:true});
+ list.addEventListener('touchmove',function(e){if(!e.touches.length)return;move(e.touches[0].clientX,e.touches[0].clientY,e);},{passive:false});
+ list.addEventListener('touchend',end,{passive:true});list.addEventListener('touchcancel',end,{passive:true});
+ list.addEventListener('contextmenu',function(e){if(e.target.closest('.grab'))e.preventDefault();});
+ list.addEventListener('mousedown',function(e){if(e.button!==0)return;var grab=e.target.closest('.grab'),row=e.target.closest('[data-name]');if(!grab||!row)return;press(e.clientX,e.clientY,row);var mm=function(ev){move(ev.clientX,ev.clientY,ev);};var mu=function(){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);end();};document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+}
+
+function isStandalone(){try{return navigator.standalone===true||(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches);}catch(e){return false;}}
+function isIOS(){var ua=navigator.userAgent||'';return /iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1);}
+function storageOk(){try{var k='nextset:check';localStorage.setItem(k,'1');localStorage.removeItem(k);return true;}catch(e){return false;}}
+function notices(app){
+ if(!storageOk())app.appendChild(el('div',{class:'notice warn',role:'alert'},[el('div',{class:'notice-title',text:'הדפדפן הזה חוסם שמירה'}),el('div',{class:'notice-text',text:'המשקלים לא יישמרו כאן. פתח את הקישור בסאפרי רגיל (לא בגלישה פרטית ולא בתוך אפליקציה אחרת) והוסף את האפליקציה למסך הבית.'})]));
+ if(isStandalone()||S.hideInstallHint)return;
+ var how=isIOS()?'בסאפרי: לוחצים על כפתור השיתוף (ריבוע עם חץ למעלה) ואז על ״הוספה למסך הבית״.':'בתפריט הדפדפן בוחרים ״הוספה למסך הבית״ או ״התקנת אפליקציה״.';
+ app.appendChild(el('div',{class:'notice'},[el('div',{class:'notice-title',text:'כדאי להוסיף למסך הבית'}),el('div',{class:'notice-text',text:how+' ככה האפליקציה נפתחת כמו אפליקציה רגילה, עובדת בלי אינטרנט והנתונים נשמרים.'}),btn('הבנתי, לא להציג שוב','compact lime',function(){S.hideInstallHint=true;save();render();})]));
+}
+function backupSection(app){var sec=el('div',{class:'backup'});sec.appendChild(el('div',{class:'hint',text:'גיבוי: הנתונים נשמרים רק בדפדפן הזה. אפשר לייצא לקובץ ולייבא במכשיר אחר.'}));
+ var file=el('input',{type:'file',accept:'application/json,.json',hidden:''});file.addEventListener('change',function(){var f=file.files[0];if(!f)return;var reader=new FileReader();reader.onload=function(){importData(String(reader.result));};reader.readAsText(f);file.value='';});
+ sec.appendChild(el('div',{class:'backup-row'},[btn('ייצוא נתונים','menu',exportData),btn('ייבוא מקובץ','menu',function(){file.click();})]));sec.appendChild(file);app.appendChild(sec);}
+function exportData(){var json=JSON.stringify(S,null,1);try{var blob=new Blob([json],{type:'application/json'});var url=URL.createObjectURL(blob);var a=el('a',{href:url,download:'next-set-'+todayKey()+'.json'});document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},3000);}catch(e){}
+ var ta=el('textarea',{class:'json',readonly:''});ta.value=json;dialog({title:'ייצוא נתונים',body:el('div',{class:'form'},[el('div',{class:'hint',text:'אם לא נפתחה שמירת קובץ, אפשר להעתיק את הטקסט ולשמור אותו בפתק.'}),ta]),buttons:[{label:'העתקה',onClick:function(){ta.select();try{document.execCommand('copy');toast('הועתק');}catch(e){}return false;}},{label:'סגירה'}]});}
+function importData(text){var parsed;try{parsed=JSON.parse(text);}catch(e){toast('הקובץ אינו קובץ נתונים תקין');return;}if(!parsed||typeof parsed!=='object'||!parsed.records){toast('הקובץ אינו קובץ נתונים של הסט הבא');return;}
+ confirmDialog('ייבוא נתונים','הנתונים בקובץ יחליפו את כל מה שנמצא כאן עכשיו.','ייבוא',function(){S=Object.assign(blank(),parsed);if(save()){selected=null;view='home';render();toast('הנתונים יובאו');}});}
+
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&!document.querySelector('.overlay'))render();});
+render();
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(function(){});}catch(e){}
+if('serviceWorker' in navigator){try{navigator.serviceWorker.register('sw.js').catch(function(){});}catch(e){}}
+})();
+</script>
+</body>
+</html>
