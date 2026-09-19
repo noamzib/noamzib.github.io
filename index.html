@@ -111,7 +111,7 @@ textarea.field{display:block;min-height:84px;font-size:18px;line-height:1.35;res
 <script>
 (function(){
 'use strict';
-var VERSION='3.1';
+var VERSION='3.2';
 var TAGLINE='אימונים דינמיים וגמישים';
 var NOTES=[{key:'machineNote',title:'כיוונון המכונה',label:'כיוונון\nהמכונה',hint:'למשל, מושב 4, משענת 2'},{key:'techniqueNote',title:'הנחיות לביצוע התרגיל',label:'הנחיות\nלביצוע',hint:'למשל, גב ישר, לרדת לאט'},{key:'note',title:'הערה כללית',label:'הערה\nכללית',hint:'למשל, לכל יד או כולל המוט'}];
 var NOTE_LIMIT=500;
@@ -235,7 +235,7 @@ function renderDetail(app){
  var name=selected,r=record(name),gtext=muscleNames(exerciseMuscles(r));
  app.appendChild(btn('חזרה לכל התרגילים','',goBack));app.appendChild(gap(18));
  app.appendChild(el('div',{class:'eyebrow',text:'התרגיל שלך עכשיו'}));var shownIcon=exerciseIconId(name,r);app.appendChild(el('div',{class:'detail-name'},[iconEl(shownIcon,60),el('span',{text:name}),el('button',{class:'icon-chip',type:'button',text:shownIcon?'✎ אייקון':'＋ אייקון','aria-label':shownIcon?'החלפת האייקון של התרגיל':'הוספת אייקון לתרגיל',onclick:function(){chooseExerciseIcon(name);}})]));
- if(gtext)app.appendChild(muscleLine('detail-muscles',exerciseMuscles(r),34));app.appendChild(gap(15));
+ if(gtext)app.appendChild(muscleLine('detail-muscles',exerciseMuscles(r),60));app.appendChild(gap(15));
  var card=el('div',{class:'weight-card'},[el('div',{class:'weight-label',text:hasWeight(r)?'המשקל ששמרת לתרגיל':'עדיין לא שמרת משקל לתרגיל'})]);
  if(hasWeight(r)){card.appendChild(el('div',{class:'weight-big',text:weightText(r)+' ק״ג'}));if(r.note)card.appendChild(el('div',{class:'weight-note',text:r.note}));}
  app.appendChild(card);
@@ -272,7 +272,7 @@ function trainingPanel(name){
  function tick(){var left=secondsLeft(deadline(),Date.now());clock.textContent=timeText(left);if(left<=0)finish();}
  function stop(){if(ticker){clearInterval(ticker);ticker=null;}}
  function run(){stop();if(deadline()-Date.now()<=0){finish();return;}start.textContent='התחלה מחדש';tick();ticker=setInterval(tick,250);}
- function finish(){stop();delete S.timer[name];save();clock.textContent='00:00';start.textContent='הפעלת טיימר';toast('המנוחה הסתיימה');vibrate([200,100,200]);beep();}
+ function finish(){stop();delete S.timer[name];save();clock.textContent='00:00';start.textContent='הפעלת טיימר';toast('המנוחה הסתיימה');if(navigator.vibrate)vibrate(3000);else beep();}
  if(deadline()>0)run();
  return panel;
 }
