@@ -1,5 +1,5 @@
 // הסט הבא — service worker for the web version. Caches the app shell so the page opens offline.
-var CACHE='nextset-web-2.8';
+var CACHE='nextset-web-2.9';
 var SHELL=['./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./maskable-512.png'];
 self.addEventListener('install',function(e){e.waitUntil(caches.open(CACHE).then(function(c){return Promise.all(SHELL.map(function(u){return c.add(u).catch(function(){});}));}).then(function(){return self.skipWaiting();}));});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(keys){return Promise.all(keys.filter(function(k){return k!==CACHE;}).map(function(k){return caches.delete(k);}));}).then(function(){return self.clients.claim();}));});

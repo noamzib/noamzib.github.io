@@ -111,7 +111,7 @@ textarea.field{display:block;min-height:84px;font-size:18px;line-height:1.35;res
 <script>
 (function(){
 'use strict';
-var VERSION='2.8';
+var VERSION='2.9';
 var TAGLINE='אימונים דינמיים וגמישים';
 var NOTES=[{key:'machineNote',title:'כיוונון המכונה',label:'כיוונון\nהמכונה',hint:'למשל, מושב 4, משענת 2'},{key:'techniqueNote',title:'הנחיות לביצוע התרגיל',label:'הנחיות\nלביצוע',hint:'למשל, גב ישר, לרדת לאט'},{key:'note',title:'הערה כללית',label:'הערה\nכללית',hint:'למשל, לכל יד או כולל המוט'}];
 var NOTE_LIMIT=500;
@@ -307,7 +307,7 @@ function editorPage(app,o){
  if(!o.items.length)app.appendChild(el('div',{class:'dialog-message',text:o.empty}));
  var list=el('div',{class:'list'});
  o.items.forEach(function(item){var sub=o.subtitle?o.subtitle(item):null;
-  var card=el('div',{class:'item grab','aria-label':item+(sub?', '+sub.text:'')+', לחיצה ארוכה לשינוי מיקום'},[el('div',{class:'item-name'},[o.icon?iconEl(o.icon(item),30):null,el('span',{text:item})]),sub?(sub.node||el('div',{class:'item-sub'+(sub.none?' none':''),text:sub.text})):null]);
+  var card=el('div',{class:'item grab','aria-label':item+(sub?', '+sub.text:'')+', לחיצה ארוכה לשינוי מיקום'},[el('div',{class:'item-name'},[o.icon?iconEl(o.icon(item),42):null,el('span',{text:item})]),sub?(sub.node||el('div',{class:'item-sub'+(sub.none?' none':''),text:sub.text})):null]);
   if(o.onTap){card.style.cursor='pointer';card.setAttribute('role','button');card.setAttribute('tabindex','0');card.addEventListener('click',function(){if(suppressClick)return;o.onTap(item);});card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();o.onTap(item);}});}
   list.appendChild(el('div',{class:'row',dataset:{name:item}},[card,el('div',{class:'actions-inline'},[btn('עריכה','compact lime',function(){o.onEdit(item);}),btn('מחיקה','compact red',function(){o.onDelete(item);})])]));});
  app.appendChild(list);enableReorder(list,o.onReorder);
