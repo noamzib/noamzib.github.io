@@ -111,7 +111,7 @@ textarea.field{display:block;min-height:84px;font-size:18px;line-height:1.35;res
 <script>
 (function(){
 'use strict';
-var VERSION='3.0';
+var VERSION='3.1';
 var TAGLINE='אימונים דינמיים וגמישים';
 var NOTES=[{key:'machineNote',title:'כיוונון המכונה',label:'כיוונון\nהמכונה',hint:'למשל, מושב 4, משענת 2'},{key:'techniqueNote',title:'הנחיות לביצוע התרגיל',label:'הנחיות\nלביצוע',hint:'למשל, גב ישר, לרדת לאט'},{key:'note',title:'הערה כללית',label:'הערה\nכללית',hint:'למשל, לכל יד או כולל המוט'}];
 var NOTE_LIMIT=500;
@@ -204,7 +204,7 @@ function renderHome(app){
   var r=record(name),groups=exerciseMuscles(r),gtext=muscleNames(groups),relevant=groups.some(function(g){return active.indexOf(g)>=0;}),flagged=!!S.increase[name];
   var weightLabel=hasWeight(r)?weightText(r)+' ק״ג':'הגדרת משקל';
   var card=el('div',{class:'exercise grab'+(relevant?' relevant':''),role:'button',tabindex:'0','aria-label':name+(relevant?', מתאים לאימון שנבחר':'')+', '+(gtext||'ללא קבוצת שריר')+', '+weightLabel+(flagged?', לעלות משקל':'')+', לחיצה ארוכה לשינוי מיקום'},[
-   el('div',{class:'ex-name'},[iconEl(exerciseIconId(name,r),44),el('span',{text:name})]),gtext?muscleLine('ex-muscles',groups,30):el('div',{class:'ex-muscles none',text:'ללא קבוצת שריר'}),el('div',{class:'ex-weight',text:weightLabel}),flagged?el('div',{class:'ex-flag',text:'↑ לעלות משקל'}):null]);
+   el('div',{class:'ex-name'},[iconEl(exerciseIconId(name,r),44),el('span',{text:name})]),gtext?muscleLine('ex-muscles',groups,48):el('div',{class:'ex-muscles none',text:'ללא קבוצת שריר'}),el('div',{class:'ex-weight',text:weightLabel}),flagged?el('div',{class:'ex-flag',text:'↑ לעלות משקל'}):null]);
   card.addEventListener('click',function(){if(suppressClick)return;go('detail',{selected:name});});
   card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go('detail',{selected:name});}});
   var actions=el('div',{class:'actions'},[btn('עריכה','compact lime',function(){exerciseDialog(name,true);}),btn('מחיקה','compact red',function(){deleteExercise(name);})]);
@@ -307,7 +307,7 @@ function editorPage(app,o){
  if(!o.items.length)app.appendChild(el('div',{class:'dialog-message',text:o.empty}));
  var list=el('div',{class:'list'});
  o.items.forEach(function(item){var sub=o.subtitle?o.subtitle(item):null;
-  var card=el('div',{class:'item grab','aria-label':item+(sub?', '+sub.text:'')+', לחיצה ארוכה לשינוי מיקום'},[el('div',{class:'item-name'},[o.icon?iconEl(o.icon(item),56):null,el('span',{text:item})]),sub?(sub.node||el('div',{class:'item-sub'+(sub.none?' none':''),text:sub.text})):null]);
+  var card=el('div',{class:'item grab','aria-label':item+(sub?', '+sub.text:'')+', לחיצה ארוכה לשינוי מיקום'},[el('div',{class:'item-name'},[o.icon?iconEl(o.icon(item),72):null,el('span',{text:item})]),sub?(sub.node||el('div',{class:'item-sub'+(sub.none?' none':''),text:sub.text})):null]);
   if(o.onTap){card.style.cursor='pointer';card.setAttribute('role','button');card.setAttribute('tabindex','0');card.addEventListener('click',function(){if(suppressClick)return;o.onTap(item);});card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();o.onTap(item);}});}
   list.appendChild(el('div',{class:'row',dataset:{name:item}},[card,el('div',{class:'actions-inline'},[btn('עריכה','compact lime',function(){o.onEdit(item);}),btn('מחיקה','compact red',function(){o.onDelete(item);})])]));});
  app.appendChild(list);enableReorder(list,o.onReorder);
