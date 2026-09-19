@@ -23,7 +23,7 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manip
 :focus-visible{outline:2px solid var(--lime);outline-offset:3px}
 #app{direction:rtl;text-align:right;max-width:640px;margin:0 auto;padding:calc(25px + env(safe-area-inset-top,0px)) 24px calc(32px + env(safe-area-inset-bottom,0px));min-height:100vh}
 #app.compact{padding-right:16px;padding-left:16px;padding-top:calc(10px + env(safe-area-inset-top,0px))}
-.brand{display:flex;align-items:center;gap:12px}.brand img{width:56px;height:56px;border-radius:14px;flex:none}.brand h1{font-size:28px;font-weight:700;margin:0}
+.brand{display:flex;align-items:center;gap:12px}.brand img{width:56px;height:56px;border-radius:14px;flex:none}.feedback-btn{flex:none;margin-right:auto;max-width:136px;padding:7px 12px;border-radius:18px;background:var(--tray);border:1px solid var(--relevant-stroke);color:var(--lime);font-size:12px;font-weight:700;line-height:1.25;text-align:center}.brand h1{font-size:28px;font-weight:700;margin:0}
 .sub{color:var(--sage);font-size:15px;line-height:1.4;padding:7px 0;margin-bottom:20px}
 h2{font-size:22px;font-weight:700;margin:0;padding:7px 0;text-wrap:balance}
 .hint{color:var(--gray);font-size:14px;padding:3px 0 8px}
@@ -111,7 +111,7 @@ textarea.field{display:block;min-height:84px;font-size:18px;line-height:1.35;res
 <script>
 (function(){
 'use strict';
-var VERSION='3.3';
+var VERSION='3.4';
 var TAGLINE='אימונים דינמיים וגמישים';
 var NOTES=[{key:'machineNote',title:'כיוונון המכונה',label:'כיוונון\nהמכונה',hint:'למשל, מושב 4, משענת 2'},{key:'techniqueNote',title:'הנחיות לביצוע התרגיל',label:'הנחיות\nלביצוע',hint:'למשל, גב ישר, לרדת לאט'},{key:'note',title:'הערה כללית',label:'הערה\nכללית',hint:'למשל, לכל יד או כולל המוט'}];
 var NOTE_LIMIT=500;
@@ -173,6 +173,7 @@ function pickIcon(muscle,current,name,onPick){var root=el('div',{class:'picker'}
  ['auto',''].concat(muscle?MICON_IDS:ICON_IDS).forEach(function(id){var shown=id==='auto'?iconSuggest(muscle,name):id;var label=id==='auto'?'אוטומטי':(id?iconName(muscle,id):'ללא');var t=el('button',{class:'tile'+(id===current?' on':''),type:'button','aria-label':label,'aria-pressed':String(id===current)},[iconEl(shown,44)||el('span',{class:'ico',style:'width:44px;height:44px'}),el('span',{class:'tile-label',text:label})]);t.addEventListener('click',function(){d.close();onPick(id);});grid.appendChild(t);});root.appendChild(grid);}
 function chooseExerciseIcon(name){var old=record(name);var current=old&&Object.prototype.hasOwnProperty.call(old,'icon')?(old.icon||''):'auto';pickIcon(false,current,name,function(id){if(!old&&id==='auto')return;var value=Object.assign({},old||{weight:null,categories:[],category:''});if(id==='auto')delete value.icon;else value.icon=id;S.records[name]=value;if(save()){render();toast('האייקון נשמר');}});}
 function chooseMuscleIcon(g){var current=Object.prototype.hasOwnProperty.call(S.muscleIcons,g)?(S.muscleIcons[g]||''):'auto';pickIcon(true,current,g,function(id){delete S.muscleIcons[g];if(id!=='auto')S.muscleIcons[g]=id;if(save()){render();toast('האייקון נשמר');}});}
+function feedbackDialog(){var t=noteField('מה היית רוצה לשפר או להוסיף?',S.feedbackDraft||'');dialog({title:'הערות למפתח האפליקציה',body:el('div',{class:'form'},[el('div',{class:'hint',text:'רעיון, בקשה או תקלה? כותבים כאן ושולחים למפתח בוואטסאפ, במייל או בכל אפליקציה אחרת.'}),t]),buttons:[{label:'ביטול',onClick:function(){S.feedbackDraft=t.value;save();}},{label:'שליחה',onClick:function(){var msg=t.value.trim();if(!msg){fieldError(t,'כדאי לכתוב משהו לפני השליחה');return false;}var text=msg+'\n\n(נשלח מהסט הבא, גרסת רשת '+VERSION+')';S.feedbackDraft='';save();if(navigator.share){navigator.share({title:'הערות לאפליקציית הסט הבא',text:text}).catch(function(){});}else{window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');}}}]});setTimeout(function(){t.focus();},50);}
 function record(name){return S.records[name]||null;}
 function hasWeight(r){return !!r&&r.weight!=null;}
 function weightText(r){return String(r.weight);}
@@ -191,7 +192,7 @@ try{history.replaceState({view:'home',selected:null,weekOffset:0},'');}catch(e){
 
 function render(){if(ticker){clearInterval(ticker);ticker=null;}var app=document.getElementById('app');app.innerHTML='';app.className=(view==='week'||view==='types'||view==='groups')?'compact':'';
  if(view==='types')renderTypes(app);else if(view==='groups')renderGroups(app);else if(view==='week')renderWeek(app);else{renderBrand(app);if(view==='detail'&&selected&&isVisible(selected))renderDetail(app);else{view='home';renderHome(app);}}}
-function renderBrand(app){app.appendChild(el('div',{class:'brand'},[el('img',{src:'icon-192.png',alt:'לוגו הסט הבא'}),el('h1',{text:'הסט הבא'})]));app.appendChild(el('div',{class:'sub',text:TAGLINE+' · '+VERSION}));}
+function renderBrand(app){app.appendChild(el('div',{class:'brand'},[el('img',{src:'icon-192.png',alt:'לוגו הסט הבא'}),el('h1',{text:'הסט הבא'}),view==='home'?el('button',{class:'feedback-btn',type:'button',text:'✎ הערות למפתח האפליקציה',onclick:feedbackDialog}):null]));app.appendChild(el('div',{class:'sub',text:TAGLINE+' · '+VERSION}));}
 
 function renderHome(app){
  notices(app);
