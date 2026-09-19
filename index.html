@@ -35,28 +35,28 @@ h2{font-size:22px;font-weight:700;margin:0;padding:7px 0;text-wrap:balance}
 .btn.lime{color:var(--lime)}.btn.red{color:var(--red)}
 .btn.pick{font-size:16px}
 .btn:active{transform:translateY(1px)}
-.tray{background:var(--tray);border:1px solid var(--tray-stroke);border-radius:24px;padding:8px;margin:4px 0 10px}
+.tray{background:var(--tray);border:1px solid var(--tray-stroke);border-radius:24px;padding:10px;margin:4px 0 10px}
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.chips::-webkit-scrollbar{display:none}
-.chip{flex:none;height:46px;padding:0 18px;border-radius:23px;background:var(--card);border:1px solid var(--chip-stroke);color:var(--white);font-size:16px;white-space:nowrap}
+.chip{flex:0 0 calc((100% - 16px)/3);min-width:0;height:52px;padding:0 6px;border-radius:26px;overflow:hidden;text-overflow:ellipsis;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;background:var(--card);border:1px solid var(--chip-stroke);color:var(--white);font-size:16px;white-space:nowrap}
 .chip.active{background:var(--lime);color:var(--bg);border-color:var(--lime);font-weight:600}
 .list{display:flex;flex-direction:column;gap:12px;margin:6px 0}
 .row{display:flex;align-items:stretch;gap:8px}
 .grab{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-.exercise{flex:1;min-width:0;background:var(--card);border-radius:17px;padding:14px;min-height:144px;display:flex;flex-direction:column;cursor:pointer}
+.exercise{flex:1;min-width:0;background:var(--card);border-radius:17px;padding:14px;min-height:168px;display:flex;flex-direction:column;cursor:pointer}
 .exercise.relevant{background:var(--relevant);box-shadow:inset 0 0 0 1px var(--relevant-stroke)}
-.ex-name{font-size:21px;font-weight:700;padding-bottom:4px;overflow-wrap:anywhere;display:flex;align-items:center;gap:6px}.ex-name span,.detail-name span,.perf-name span,.item-name span{min-width:0}.ico{display:inline-block;vertical-align:middle;flex:none}.ico svg{display:block;width:100%;height:100%}.btn .ico,.option .ico{margin-left:8px}.mg{display:inline-flex;align-items:center;gap:3px;white-space:nowrap;vertical-align:middle}.item-name{display:flex;align-items:center;gap:6px}
-.ex-muscles{font-size:15px;font-weight:700;color:var(--sage)}.ex-muscles.none{color:var(--gray);font-weight:400}
-.ex-weight{font-size:21px;font-weight:700;margin-top:14px}
+.ex-name{font-size:23px;font-weight:700;padding-bottom:4px;overflow-wrap:anywhere;display:flex;align-items:center;gap:6px}.ex-name span,.detail-name span,.perf-name span,.item-name span{min-width:0}.ico{display:inline-block;vertical-align:middle;flex:none}.ico svg{display:block;width:100%;height:100%}.btn .ico,.option .ico{margin-left:8px}.mg{display:inline-flex;align-items:center;gap:3px;white-space:nowrap;vertical-align:middle}.item-name{display:flex;align-items:center;gap:6px}
+.ex-muscles{font-size:17px;font-weight:700;color:var(--sage)}.ex-muscles.none{color:var(--gray);font-weight:400}
+.ex-weight{font-size:22px;font-weight:700;margin-top:14px}
 .ex-flag{font-size:15px;font-weight:700;color:var(--lime);padding-top:4px}
-.actions{width:82px;flex:none;display:flex;flex-direction:column;gap:4px}.actions .btn{flex:1;display:flex;align-items:center;justify-content:center}
-.actions-inline{flex:none;display:flex;gap:6px;align-items:center}.actions-inline .btn{width:66px;height:46px;display:flex;align-items:center;justify-content:center}
-.item{flex:1;min-width:0;background:var(--card);border-radius:17px;padding:12px 14px;min-height:50px;display:flex;flex-direction:column;justify-content:center;cursor:default}
-.item-name{font-size:18px;font-weight:700;overflow-wrap:anywhere}.item-sub{font-size:14px;color:var(--sage);padding-top:2px}.item-sub.none{color:var(--gray)}
+.actions{width:64px;flex:none;display:flex;flex-direction:column;gap:4px}.actions .btn{flex:1;display:flex;align-items:center;justify-content:center}
+.actions-inline{flex:none;width:64px;display:flex;flex-direction:column;gap:4px}.actions-inline .btn{flex:1;display:flex;align-items:center;justify-content:center}
+.item{flex:1;min-width:0;background:var(--card);border-radius:17px;padding:12px 14px;min-height:100px;display:flex;flex-direction:column;justify-content:center;cursor:default}
+.item-name{font-size:22px;font-weight:700;overflow-wrap:anywhere}.item-sub{font-size:16px;color:var(--sage);padding-top:2px}.item-sub.none{color:var(--gray)}
 .drag-clone{position:fixed;z-index:50;pointer-events:none;box-shadow:0 12px 30px rgba(0,0,0,.55);margin:0}
 .footer{color:var(--gray);font-size:14px;padding:14px 0 7px}
 .eyebrow{color:var(--lime);font-size:15px;padding:7px 0}
 .detail-name{font-size:32px;font-weight:700;padding-top:7px;overflow-wrap:anywhere;line-height:1.2;display:flex;align-items:center;gap:10px}
-.detail-muscles{font-size:16px;font-weight:700;color:var(--sage);padding-top:2px}
+.detail-muscles{font-size:19px;font-weight:700;color:var(--sage);padding-top:2px}
 .weight-card{background:var(--card);border-radius:17px;padding:22px;text-align:center}
 .weight-label{color:var(--gray);font-size:16px;padding:7px 0}
 .weight-big{color:var(--lime);font-size:56px;font-weight:700;padding:7px 0;line-height:1.1;direction:ltr}
@@ -111,7 +111,7 @@ textarea.field{display:block;min-height:84px;font-size:18px;line-height:1.35;res
 <script>
 (function(){
 'use strict';
-var VERSION='2.9';
+var VERSION='3.0';
 var TAGLINE='אימונים דינמיים וגמישים';
 var NOTES=[{key:'machineNote',title:'כיוונון המכונה',label:'כיוונון\nהמכונה',hint:'למשל, מושב 4, משענת 2'},{key:'techniqueNote',title:'הנחיות לביצוע התרגיל',label:'הנחיות\nלביצוע',hint:'למשל, גב ישר, לרדת לאט'},{key:'note',title:'הערה כללית',label:'הערה\nכללית',hint:'למשל, לכל יד או כולל המוט'}];
 var NOTE_LIMIT=500;
@@ -204,7 +204,7 @@ function renderHome(app){
   var r=record(name),groups=exerciseMuscles(r),gtext=muscleNames(groups),relevant=groups.some(function(g){return active.indexOf(g)>=0;}),flagged=!!S.increase[name];
   var weightLabel=hasWeight(r)?weightText(r)+' ק״ג':'הגדרת משקל';
   var card=el('div',{class:'exercise grab'+(relevant?' relevant':''),role:'button',tabindex:'0','aria-label':name+(relevant?', מתאים לאימון שנבחר':'')+', '+(gtext||'ללא קבוצת שריר')+', '+weightLabel+(flagged?', לעלות משקל':'')+', לחיצה ארוכה לשינוי מיקום'},[
-   el('div',{class:'ex-name'},[iconEl(exerciseIconId(name,r),30),el('span',{text:name})]),gtext?muscleLine('ex-muscles',groups,22):el('div',{class:'ex-muscles none',text:'ללא קבוצת שריר'}),el('div',{class:'ex-weight',text:weightLabel}),flagged?el('div',{class:'ex-flag',text:'↑ לעלות משקל'}):null]);
+   el('div',{class:'ex-name'},[iconEl(exerciseIconId(name,r),44),el('span',{text:name})]),gtext?muscleLine('ex-muscles',groups,30):el('div',{class:'ex-muscles none',text:'ללא קבוצת שריר'}),el('div',{class:'ex-weight',text:weightLabel}),flagged?el('div',{class:'ex-flag',text:'↑ לעלות משקל'}):null]);
   card.addEventListener('click',function(){if(suppressClick)return;go('detail',{selected:name});});
   card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go('detail',{selected:name});}});
   var actions=el('div',{class:'actions'},[btn('עריכה','compact lime',function(){exerciseDialog(name,true);}),btn('מחיקה','compact red',function(){deleteExercise(name);})]);
@@ -221,8 +221,8 @@ function workoutBar(app){
  app.appendChild(el('h2',{text:'איזה אימון עושים היום?'}));
  var today=S.workoutDays[todayKey()]||'';var chips=el('div',{class:'chips'});
  if(!S.workoutTypes.length)chips.appendChild(el('div',{class:'hint',style:'padding:6px 10px',text:'אין סוגי אימון. הוסף אחד במסך ״עריכת סוגי אימונים״.'}));
- S.workoutTypes.forEach(function(type){var active=type===today;chips.appendChild(el('button',{class:'chip'+(active?' active':''),type:'button',text:type,'aria-pressed':String(active),'aria-label':type+(active?', האימון של היום, לחיצה מבטלת':', לחיצה מסמנת להיום'),onclick:function(){chooseToday(type);}}));});
- app.appendChild(el('div',{class:'tray'},[chips]));
+ S.workoutTypes.forEach(function(type){var active=type===today;chips.appendChild(el('button',{class:'chip grab'+(active?' active':''),type:'button',dataset:{name:type},text:type,'aria-pressed':String(active),'aria-label':type+(active?', האימון של היום, לחיצה מבטלת':', לחיצה מסמנת להיום')+', לחיצה ארוכה לשינוי מיקום',onclick:function(){if(suppressClick)return;chooseToday(type);}}));});
+ app.appendChild(el('div',{class:'tray'},[chips]));enableChipReorder(chips,function(order){S.workoutTypes=order;if(save())toast('הסדר החדש נשמר');});
  app.appendChild(btn('עריכת סוגי אימונים','menu',function(){go('types');}));
  app.appendChild(btn('עריכת קבוצות שרירים','menu',function(){go('groups');}));
  app.appendChild(btn('האימונים שלי השבוע · א׳–שבת','menu',function(){go('week',{weekOffset:0});}));
@@ -234,8 +234,8 @@ function openLastTimer(){var last=S.lastTimerExercise;if(!last){toast('הפעל 
 function renderDetail(app){
  var name=selected,r=record(name),gtext=muscleNames(exerciseMuscles(r));
  app.appendChild(btn('חזרה לכל התרגילים','',goBack));app.appendChild(gap(18));
- app.appendChild(el('div',{class:'eyebrow',text:'התרגיל שלך עכשיו'}));var shownIcon=exerciseIconId(name,r);app.appendChild(el('div',{class:'detail-name'},[iconEl(shownIcon,44),el('span',{text:name}),el('button',{class:'icon-chip',type:'button',text:shownIcon?'✎ אייקון':'＋ אייקון','aria-label':shownIcon?'החלפת האייקון של התרגיל':'הוספת אייקון לתרגיל',onclick:function(){chooseExerciseIcon(name);}})]));
- if(gtext)app.appendChild(muscleLine('detail-muscles',exerciseMuscles(r),24));app.appendChild(gap(15));
+ app.appendChild(el('div',{class:'eyebrow',text:'התרגיל שלך עכשיו'}));var shownIcon=exerciseIconId(name,r);app.appendChild(el('div',{class:'detail-name'},[iconEl(shownIcon,60),el('span',{text:name}),el('button',{class:'icon-chip',type:'button',text:shownIcon?'✎ אייקון':'＋ אייקון','aria-label':shownIcon?'החלפת האייקון של התרגיל':'הוספת אייקון לתרגיל',onclick:function(){chooseExerciseIcon(name);}})]));
+ if(gtext)app.appendChild(muscleLine('detail-muscles',exerciseMuscles(r),34));app.appendChild(gap(15));
  var card=el('div',{class:'weight-card'},[el('div',{class:'weight-label',text:hasWeight(r)?'המשקל ששמרת לתרגיל':'עדיין לא שמרת משקל לתרגיל'})]);
  if(hasWeight(r)){card.appendChild(el('div',{class:'weight-big',text:weightText(r)+' ק״ג'}));if(r.note)card.appendChild(el('div',{class:'weight-note',text:r.note}));}
  app.appendChild(card);
@@ -307,13 +307,13 @@ function editorPage(app,o){
  if(!o.items.length)app.appendChild(el('div',{class:'dialog-message',text:o.empty}));
  var list=el('div',{class:'list'});
  o.items.forEach(function(item){var sub=o.subtitle?o.subtitle(item):null;
-  var card=el('div',{class:'item grab','aria-label':item+(sub?', '+sub.text:'')+', לחיצה ארוכה לשינוי מיקום'},[el('div',{class:'item-name'},[o.icon?iconEl(o.icon(item),42):null,el('span',{text:item})]),sub?(sub.node||el('div',{class:'item-sub'+(sub.none?' none':''),text:sub.text})):null]);
+  var card=el('div',{class:'item grab','aria-label':item+(sub?', '+sub.text:'')+', לחיצה ארוכה לשינוי מיקום'},[el('div',{class:'item-name'},[o.icon?iconEl(o.icon(item),56):null,el('span',{text:item})]),sub?(sub.node||el('div',{class:'item-sub'+(sub.none?' none':''),text:sub.text})):null]);
   if(o.onTap){card.style.cursor='pointer';card.setAttribute('role','button');card.setAttribute('tabindex','0');card.addEventListener('click',function(){if(suppressClick)return;o.onTap(item);});card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();o.onTap(item);}});}
   list.appendChild(el('div',{class:'row',dataset:{name:item}},[card,el('div',{class:'actions-inline'},[btn('עריכה','compact lime',function(){o.onEdit(item);}),btn('מחיקה','compact red',function(){o.onDelete(item);})])]));});
  app.appendChild(list);enableReorder(list,o.onReorder);
  app.appendChild(gap(12));app.appendChild(btn(o.addLabel,'primary',o.onAdd));
 }
-function renderTypes(app){editorPage(app,{heading:'סוגי אימון',hint:'לחיצה ארוכה על סוג אימון כדי לגרור ולשנות את הסדר',items:S.workoutTypes,empty:'אין סוגי אימון עדיין. הוסף אחד למטה.',subtitle:function(t){var g=muscleNames(S.muscles[t]||[]);return {text:g||'ללא קבוצות שרירים',none:!g,node:g?muscleLine('item-sub',S.muscles[t]||[],20):null};},onEdit:function(t){chooseWorkout(t,false);},onDelete:deleteType,addLabel:'＋ הוספת סוג אימון',onAdd:addWorkout,onReorder:function(order){S.workoutTypes=order;if(save())toast('הסדר החדש נשמר');}});}
+function renderTypes(app){editorPage(app,{heading:'סוגי אימון',hint:'לחיצה ארוכה על סוג אימון כדי לגרור ולשנות את הסדר',items:S.workoutTypes,empty:'אין סוגי אימון עדיין. הוסף אחד למטה.',subtitle:function(t){var g=muscleNames(S.muscles[t]||[]);return {text:g||'ללא קבוצות שרירים',none:!g,node:g?muscleLine('item-sub',S.muscles[t]||[],26):null};},onEdit:function(t){chooseWorkout(t,false);},onDelete:deleteType,addLabel:'＋ הוספת סוג אימון',onAdd:addWorkout,onReorder:function(order){S.workoutTypes=order;if(save())toast('הסדר החדש נשמר');}});}
 function renderGroups(app){editorPage(app,{onTap:chooseMuscleIcon,heading:'קבוצות שרירים',hint:'לחיצה על קבוצה כדי לבחור לה אייקון · לחיצה ארוכה כדי לגרור ולשנות את הסדר',items:S.muscleGroups,empty:'אין קבוצות שרירים עדיין. הוסף אחת למטה.',subtitle:null,icon:muscleIconId,onEdit:renameGroup,onDelete:deleteGroup,addLabel:'＋ הוספת קבוצת שריר',onAdd:addGroup,onReorder:function(order){S.muscleGroups=order;if(save())toast('הסדר החדש נשמר');}});}
 
 function pickMuscles(heading,initial,confirmLabel,rename,onPick){
@@ -372,6 +372,21 @@ function renameExercise(o,n){delete S.records[o];if(S.deleted.indexOf(o)<0)S.del
  S.exerciseOrder=renamedList(S.exerciseOrder,o,n);if(S.lastTimerExercise===o)S.lastTimerExercise=n;}
 function deleteExercise(name){confirmDialog('מחיקת תרגיל','למחוק את ״'+name+'״ ואת המשקל ששמרת?','מחיקה',function(){delete S.records[name];if(S.deleted.indexOf(name)<0)S.deleted.push(name);delete S.increase[name];if(S.lastTimerExercise===name)S.lastTimerExercise='';if(save()){if(view==='detail')go('home');else render();toast('התרגיל נמחק');}});}
 
+function enableChipReorder(strip,onSave){
+ var timer=null,sx=0,sy=0,dragging=null,clone=null,ox=0,lastX=0,startOrder=null,auto=0,raf=null;
+ function items(){return Array.prototype.slice.call(strip.querySelectorAll('.chip'));}
+ function press(x,y,chip){sx=x;sy=y;clearTimeout(timer);timer=setTimeout(function(){timer=null;begin(chip,x);},450);}
+ function begin(chip,x){if(items().length<2){toast('צריך לפחות שני פריטים כדי לשנות סדר');return;}dragging=chip;startOrder=items().map(function(c){return c.dataset.name;});var b=chip.getBoundingClientRect();ox=x-b.left;clone=chip.cloneNode(true);clone.classList.add('drag-clone');clone.style.width=b.width+'px';clone.style.height=b.height+'px';clone.style.left=b.left+'px';clone.style.top=b.top+'px';document.body.appendChild(clone);chip.style.opacity='0.35';suppressClick=true;lastX=x;vibrate(30);}
+ function move(x,y,e){if(timer){if(Math.abs(x-sx)>8||Math.abs(y-sy)>8){clearTimeout(timer);timer=null;}return;}if(!dragging)return;if(e&&e.cancelable)e.preventDefault();lastX=x;clone.style.left=(x-ox)+'px';shift(x);var r=strip.getBoundingClientRect(),edge=48;auto=x<r.left+edge?-7:(x>r.right-edge?7:0);if(auto&&!raf)raf=requestAnimationFrame(step);}
+ function step(){raf=null;if(!dragging||!auto)return;strip.scrollLeft+=auto;shift(lastX);raf=requestAnimationFrame(step);}
+ function shift(x){var cs=items();var cur=cs.indexOf(dragging);if(cur<0)return;var rtl=getComputedStyle(strip).direction==='rtl';var centers=cs.map(function(c){var b=c.getBoundingClientRect();var m=(b.left+b.right)/2;return rtl?-m:m;});var t=targetIndex(centers,cur,rtl?-x:x);if(t===cur)return;if(t>cur)strip.insertBefore(dragging,cs[t].nextSibling);else strip.insertBefore(dragging,cs[t]);}
+ function end(){if(timer){clearTimeout(timer);timer=null;}if(!dragging)return;var order=items().map(function(c){return c.dataset.name;});dragging.style.opacity='';dragging=null;auto=0;if(raf){cancelAnimationFrame(raf);raf=null;}if(clone){clone.remove();clone=null;}setTimeout(function(){suppressClick=false;},80);if(JSON.stringify(order)!==JSON.stringify(startOrder))onSave(order);}
+ strip.addEventListener('touchstart',function(e){if(e.touches.length!==1)return;var chip=e.target.closest('.chip');if(!chip)return;press(e.touches[0].clientX,e.touches[0].clientY,chip);},{passive:true});
+ strip.addEventListener('touchmove',function(e){if(!e.touches.length)return;move(e.touches[0].clientX,e.touches[0].clientY,e);},{passive:false});
+ strip.addEventListener('touchend',end,{passive:true});strip.addEventListener('touchcancel',end,{passive:true});
+ strip.addEventListener('contextmenu',function(e){if(e.target.closest('.chip'))e.preventDefault();});
+ strip.addEventListener('mousedown',function(e){if(e.button!==0)return;var chip=e.target.closest('.chip');if(!chip)return;press(e.clientX,e.clientY,chip);var mm=function(ev){move(ev.clientX,ev.clientY,ev);};var mu=function(){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);end();};document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+}
 function enableReorder(list,onSave){
  var timer=null,sx=0,sy=0,dragging=null,clone=null,ox=0,oy=0,lastY=0,startOrder=null,auto=0,raf=null;
  function rows(){return Array.prototype.slice.call(list.children);}
