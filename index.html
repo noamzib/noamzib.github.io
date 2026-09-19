@@ -93,7 +93,7 @@ h2{font-size:22px;font-weight:700;margin:0;padding:7px 0;text-wrap:balance}
 textarea.field{display:block;min-height:84px;font-size:18px;line-height:1.35;resize:vertical}
 .field-error{color:var(--red);font-size:14px}
 .picker-head{display:flex;align-items:center;gap:10px}.picker-title{flex:1;font-size:20px;font-weight:700;text-wrap:balance}
-.rename{flex:none;height:40px;padding:0 12px;border-radius:17px;background:var(--bg);color:var(--lime);font-size:14px}
+.rename{flex:none;height:40px;padding:0 12px;border-radius:17px;background:var(--bg);color:var(--lime);font-size:14px}.icon-chip{flex:none;margin-right:auto;height:40px;padding:0 12px;border-radius:17px;background:var(--card);color:var(--lime);font-size:14px;font-weight:400;line-height:1}
 .picker-list{max-height:50vh;overflow:auto;display:flex;flex-direction:column;gap:6px;padding:2px 0}
 .option{min-height:48px;border-radius:17px;background:var(--bg);color:var(--white);font-size:16px;padding:8px 14px;text-align:center}.option.on{background:var(--bg);color:var(--lime);font-weight:600;box-shadow:inset 0 0 0 2px var(--lime)}
 .picker-actions{display:flex;gap:10px;padding-top:14px}.icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-height:60vh;overflow:auto;padding:2px}.tile{background:var(--bg);border-radius:14px;padding:8px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;border:2px solid transparent;color:var(--gray);font:inherit}.tile.on{border-color:var(--lime);color:var(--lime)}.tile .ico{width:44px;height:44px}.tile-label{font-size:11px;text-align:center;line-height:1.2;overflow-wrap:anywhere}
@@ -111,7 +111,7 @@ textarea.field{display:block;min-height:84px;font-size:18px;line-height:1.35;res
 <script>
 (function(){
 'use strict';
-var VERSION='2.7';
+var VERSION='2.8';
 var TAGLINE='אימונים דינמיים וגמישים';
 var NOTES=[{key:'machineNote',title:'כיוונון המכונה',label:'כיוונון\nהמכונה',hint:'למשל, מושב 4, משענת 2'},{key:'techniqueNote',title:'הנחיות לביצוע התרגיל',label:'הנחיות\nלביצוע',hint:'למשל, גב ישר, לרדת לאט'},{key:'note',title:'הערה כללית',label:'הערה\nכללית',hint:'למשל, לכל יד או כולל המוט'}];
 var NOTE_LIMIT=500;
@@ -171,6 +171,8 @@ function iconLabel(muscle,choice,name){if(choice==='auto'){var id=iconSuggest(mu
 function iconButton(muscle,choice,input){var b=btn('','pick',function(){pickIcon(muscle,choice.v,input.value.trim(),function(id){choice.v=id;paint();});});var paint=function(){b.textContent='';var ic=iconEl(iconFor(muscle,choice.v,input.value.trim()),28);if(ic)b.appendChild(ic);b.appendChild(document.createTextNode(iconLabel(muscle,choice.v,input.value.trim())));};paint();input.addEventListener('input',paint);return b;}
 function pickIcon(muscle,current,name,onPick){var root=el('div',{class:'picker'});var d=dialog({body:root,buttons:[{label:'ביטול'}]});root.appendChild(el('div',{class:'picker-title',text:muscle?'אייקון לקבוצת השריר':'אייקון לתרגיל'}));root.appendChild(el('div',{class:'hint',text:'״אוטומטי״ בוחר לפי השם. לחיצה על אייקון בוחרת אותו.'}));var grid=el('div',{class:'icon-grid'});
  ['auto',''].concat(muscle?MICON_IDS:ICON_IDS).forEach(function(id){var shown=id==='auto'?iconSuggest(muscle,name):id;var label=id==='auto'?'אוטומטי':(id?iconName(muscle,id):'ללא');var t=el('button',{class:'tile'+(id===current?' on':''),type:'button','aria-label':label,'aria-pressed':String(id===current)},[iconEl(shown,44)||el('span',{class:'ico',style:'width:44px;height:44px'}),el('span',{class:'tile-label',text:label})]);t.addEventListener('click',function(){d.close();onPick(id);});grid.appendChild(t);});root.appendChild(grid);}
+function chooseExerciseIcon(name){var old=record(name);var current=old&&Object.prototype.hasOwnProperty.call(old,'icon')?(old.icon||''):'auto';pickIcon(false,current,name,function(id){if(!old&&id==='auto')return;var value=Object.assign({},old||{weight:null,categories:[],category:''});if(id==='auto')delete value.icon;else value.icon=id;S.records[name]=value;if(save()){render();toast('האייקון נשמר');}});}
+function chooseMuscleIcon(g){var current=Object.prototype.hasOwnProperty.call(S.muscleIcons,g)?(S.muscleIcons[g]||''):'auto';pickIcon(true,current,g,function(id){delete S.muscleIcons[g];if(id!=='auto')S.muscleIcons[g]=id;if(save()){render();toast('האייקון נשמר');}});}
 function record(name){return S.records[name]||null;}
 function hasWeight(r){return !!r&&r.weight!=null;}
 function weightText(r){return String(r.weight);}
@@ -232,7 +234,7 @@ function openLastTimer(){var last=S.lastTimerExercise;if(!last){toast('הפעל 
 function renderDetail(app){
  var name=selected,r=record(name),gtext=muscleNames(exerciseMuscles(r));
  app.appendChild(btn('חזרה לכל התרגילים','',goBack));app.appendChild(gap(18));
- app.appendChild(el('div',{class:'eyebrow',text:'התרגיל שלך עכשיו'}));app.appendChild(el('div',{class:'detail-name'},[iconEl(exerciseIconId(name,r),44),el('span',{text:name})]));
+ app.appendChild(el('div',{class:'eyebrow',text:'התרגיל שלך עכשיו'}));var shownIcon=exerciseIconId(name,r);app.appendChild(el('div',{class:'detail-name'},[iconEl(shownIcon,44),el('span',{text:name}),el('button',{class:'icon-chip',type:'button',text:shownIcon?'✎ אייקון':'＋ אייקון','aria-label':shownIcon?'החלפת האייקון של התרגיל':'הוספת אייקון לתרגיל',onclick:function(){chooseExerciseIcon(name);}})]));
  if(gtext)app.appendChild(muscleLine('detail-muscles',exerciseMuscles(r),24));app.appendChild(gap(15));
  var card=el('div',{class:'weight-card'},[el('div',{class:'weight-label',text:hasWeight(r)?'המשקל ששמרת לתרגיל':'עדיין לא שמרת משקל לתרגיל'})]);
  if(hasWeight(r)){card.appendChild(el('div',{class:'weight-big',text:weightText(r)+' ק״ג'}));if(r.note)card.appendChild(el('div',{class:'weight-note',text:r.note}));}
@@ -306,12 +308,13 @@ function editorPage(app,o){
  var list=el('div',{class:'list'});
  o.items.forEach(function(item){var sub=o.subtitle?o.subtitle(item):null;
   var card=el('div',{class:'item grab','aria-label':item+(sub?', '+sub.text:'')+', לחיצה ארוכה לשינוי מיקום'},[el('div',{class:'item-name'},[o.icon?iconEl(o.icon(item),30):null,el('span',{text:item})]),sub?(sub.node||el('div',{class:'item-sub'+(sub.none?' none':''),text:sub.text})):null]);
+  if(o.onTap){card.style.cursor='pointer';card.setAttribute('role','button');card.setAttribute('tabindex','0');card.addEventListener('click',function(){if(suppressClick)return;o.onTap(item);});card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();o.onTap(item);}});}
   list.appendChild(el('div',{class:'row',dataset:{name:item}},[card,el('div',{class:'actions-inline'},[btn('עריכה','compact lime',function(){o.onEdit(item);}),btn('מחיקה','compact red',function(){o.onDelete(item);})])]));});
  app.appendChild(list);enableReorder(list,o.onReorder);
  app.appendChild(gap(12));app.appendChild(btn(o.addLabel,'primary',o.onAdd));
 }
 function renderTypes(app){editorPage(app,{heading:'סוגי אימון',hint:'לחיצה ארוכה על סוג אימון כדי לגרור ולשנות את הסדר',items:S.workoutTypes,empty:'אין סוגי אימון עדיין. הוסף אחד למטה.',subtitle:function(t){var g=muscleNames(S.muscles[t]||[]);return {text:g||'ללא קבוצות שרירים',none:!g,node:g?muscleLine('item-sub',S.muscles[t]||[],20):null};},onEdit:function(t){chooseWorkout(t,false);},onDelete:deleteType,addLabel:'＋ הוספת סוג אימון',onAdd:addWorkout,onReorder:function(order){S.workoutTypes=order;if(save())toast('הסדר החדש נשמר');}});}
-function renderGroups(app){editorPage(app,{heading:'קבוצות שרירים',hint:'לחיצה ארוכה על קבוצה כדי לגרור ולשנות את הסדר',items:S.muscleGroups,empty:'אין קבוצות שרירים עדיין. הוסף אחת למטה.',subtitle:null,icon:muscleIconId,onEdit:renameGroup,onDelete:deleteGroup,addLabel:'＋ הוספת קבוצת שריר',onAdd:addGroup,onReorder:function(order){S.muscleGroups=order;if(save())toast('הסדר החדש נשמר');}});}
+function renderGroups(app){editorPage(app,{onTap:chooseMuscleIcon,heading:'קבוצות שרירים',hint:'לחיצה על קבוצה כדי לבחור לה אייקון · לחיצה ארוכה כדי לגרור ולשנות את הסדר',items:S.muscleGroups,empty:'אין קבוצות שרירים עדיין. הוסף אחת למטה.',subtitle:null,icon:muscleIconId,onEdit:renameGroup,onDelete:deleteGroup,addLabel:'＋ הוספת קבוצת שריר',onAdd:addGroup,onReorder:function(order){S.muscleGroups=order;if(save())toast('הסדר החדש נשמר');}});}
 
 function pickMuscles(heading,initial,confirmLabel,rename,onPick){
  var pending={};initial.forEach(function(g){pending[g]=true;});var root=el('div',{class:'picker'});var d=dialog({body:root,buttons:[]});
@@ -329,18 +332,18 @@ function renameWorkout(existing){nameDialog('עריכת שם האימון','שם
  S.workoutTypes=renamedList(S.workoutTypes,existing,name);if(S.muscles[existing]){S.muscles[name]=S.muscles[existing];delete S.muscles[existing];}var t=todayKey();if(S.workoutDays[t]===existing)S.workoutDays[t]=name;if(!save())return false;render();setTimeout(function(){chooseWorkout(name,false);},0);});}
 function addWorkout(){nameDialog('סוג אימון חדש','למשל, גב ויד קדמית','',60,'הוספה',function(type,input){if(S.workoutTypes.indexOf(type)>=0){fieldError(input,'סוג האימון כבר קיים');return false;}setTimeout(function(){chooseWorkout(type,true);},0);});}
 function deleteType(type){confirmDialog('מחיקת ״'+type+'״','סוג האימון יוסר מהרשימה. אימונים שכבר נרשמו ביומן יישמרו.','מחיקה',function(){S.workoutTypes=S.workoutTypes.filter(function(t){return t!==type;});if(save()){render();toast('סוג האימון נמחק');}});}
-function addGroup(){var choice={v:'auto'};nameDialog('קבוצת שריר חדשה','למשל, טרפז','',40,'הוספה',function(g,input){if(S.muscleGroups.indexOf(g)>=0){fieldError(input,'קבוצת השריר כבר קיימת');return false;}S.muscleGroups.push(g);delete S.muscleIcons[g];if(choice.v!=='auto')S.muscleIcons[g]=choice.v;if(!save())return false;render();toast('קבוצת השריר נוספה');},function(input){return iconButton(true,choice,input);});}
+function addGroup(){var choice={v:'auto'};nameDialog('קבוצת שריר חדשה','למשל, טרפז','',40,'הוספה',function(g,input){if(S.muscleGroups.indexOf(g)>=0){fieldError(input,'קבוצת השריר כבר קיימת');return false;}S.muscleGroups.push(g);delete S.muscleIcons[g];if(choice.v!=='auto')S.muscleIcons[g]=choice.v;if(!save())return false;render();toast('קבוצת השריר נוספה');},function(input){return el('div',{},[el('div',{class:'flabel',text:'אייקון — לא חובה'}),iconButton(true,choice,input)]);});}
 function renameGroup(existing){var choice={v:Object.prototype.hasOwnProperty.call(S.muscleIcons,existing)?(S.muscleIcons[existing]||''):'auto'};nameDialog('עריכת קבוצת שריר','שם קבוצת השריר',existing,40,'שמירה',function(g,input){var renamed=g!==existing;if(renamed&&S.muscleGroups.indexOf(g)>=0){fieldError(input,'קבוצת השריר כבר קיימת');return false;}
  if(renamed){S.muscleGroups=renamedList(S.muscleGroups,existing,g);Object.keys(S.records).forEach(function(n){var r=S.records[n];if(Array.isArray(r.categories))r.categories=renamedList(r.categories,existing,g);if(r.category===existing)r.category=g;});Object.keys(S.muscles).forEach(function(t){S.muscles[t]=renamedList(S.muscles[t],existing,g);});Object.keys(S.dayMuscles).forEach(function(d){S.dayMuscles[d]=renamedList(S.dayMuscles[d],existing,g);});}
  delete S.muscleIcons[existing];delete S.muscleIcons[g];if(choice.v!=='auto')S.muscleIcons[g]=choice.v;
- if(!save())return false;render();toast(renamed?'קבוצת השריר עודכנה בכל התרגילים והאימונים':'קבוצת השריר נשמרה');},function(input){return iconButton(true,choice,input);});}
+ if(!save())return false;render();toast(renamed?'קבוצת השריר עודכנה בכל התרגילים והאימונים':'קבוצת השריר נשמרה');},function(input){return el('div',{},[el('div',{class:'flabel',text:'אייקון — לא חובה'}),iconButton(true,choice,input)]);});}
 function deleteGroup(g){confirmDialog('מחיקת ״'+g+'״','קבוצת השריר תוסר מהרשימה ולא תוצג יותר בתרגילים ובאימונים.','מחיקה',function(){S.muscleGroups=S.muscleGroups.filter(function(x){return x!==g;});delete S.muscleIcons[g];if(save()){render();toast('קבוצת השריר נמחקה');}});}
 
 function exerciseDialog(existing,editFields){
  var old=existing?record(existing):null;var form=el('div',{class:'form'});
  var nameInput=field('שם התרגיל',existing||'',false);if(editFields){form.appendChild(el('div',{class:'flabel',text:'שם התרגיל'}));form.appendChild(nameInput);}
  var selectedMuscles=exerciseMuscles(old).slice();var catBtn=null;var iconChoice={v:old&&Object.prototype.hasOwnProperty.call(old,'icon')?(old.icon||''):'auto'};
- if(editFields){form.appendChild(el('div',{class:'flabel',text:'קבוצות שרירים — אפשר לבחור כמה'}));catBtn=btn('','pick',function(){pickMuscles('קבוצות השרירים של התרגיל',selectedMuscles,'בחירה',null,function(chosen){selectedMuscles=chosen.slice();paintCat();return true;});});var paintCat=function(){catBtn.textContent='';if(selectedMuscles.length){var line=muscleLine('',selectedMuscles,22);while(line.firstChild)catBtn.appendChild(line.firstChild);}else catBtn.textContent='בחירת קבוצות שרירים';};paintCat();form.appendChild(catBtn);form.appendChild(iconButton(false,iconChoice,nameInput));}
+ if(editFields){form.appendChild(el('div',{class:'flabel',text:'קבוצות שרירים — אפשר לבחור כמה'}));catBtn=btn('','pick',function(){pickMuscles('קבוצות השרירים של התרגיל',selectedMuscles,'בחירה',null,function(chosen){selectedMuscles=chosen.slice();paintCat();return true;});});var paintCat=function(){catBtn.textContent='';if(selectedMuscles.length){var line=muscleLine('',selectedMuscles,22);while(line.firstChild)catBtn.appendChild(line.firstChild);}else catBtn.textContent='בחירת קבוצות שרירים';};paintCat();form.appendChild(catBtn);form.appendChild(el('div',{class:'flabel',text:'אייקון — לא חובה'}));form.appendChild(iconButton(false,iconChoice,nameInput));}
  form.appendChild(el('div',{class:'flabel',text:'משקל בק״ג'}));var amount=field('למשל 20',hasWeight(old)?weightText(old):'',true);form.appendChild(amount);
  var noteInputs=NOTES.map(function(def){if(!editFields&&def.key!=='note')return null;form.appendChild(el('div',{class:'flabel',text:def.title+' — לא חובה'}));var t=noteField(def.hint,old?(old[def.key]||''):'');form.appendChild(t);return t;});
  dialog({title:!existing?'תרגיל חדש':(editFields?'עריכת תרגיל':'עדכון משקל'),body:form,buttons:[{label:'ביטול'},{label:'שמירה',onClick:function(){
