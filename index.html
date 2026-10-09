@@ -116,9 +116,9 @@ textarea.field{display:block;min-height:84px;font-size:18px;line-height:1.35;res
 <script>
 (function(){
 'use strict';
-var VERSION='4.0';
+var VERSION='4.1';
 var TAGLINE='אימונים דינמיים וגמישים';
-var NOTES=[{key:'machineNote',title:'כיוונון המכונה',label:'כיוונון\nהמכונה',hint:'למשל, מושב 4, משענת 2'},{key:'techniqueNote',title:'הנחיות לביצוע התרגיל',label:'הנחיות\nלביצוע',hint:'למשל, גב ישר, לרדת לאט'},{key:'note',title:'הערה כללית',label:'הערה\nכללית',hint:'למשל, לכל יד או כולל המוט'}];
+var NOTES=[{key:'machineNote',title:'כיוונון המכונה',label:'כיוונון\nהמכונה',hint:'למשל, מושב 4, משענת 2',media:'machineMedia',add:'הוספת כיוונון',saved:'הכיוונון נשמר',empty:'עדיין אין כאן כיוונון. אפשר לכתוב, לצלם תמונה או סרטון של המכונה, או לבחור מהגלריה.',mediaLabel:'תמונות וסרטונים של המכונה — לא חובה'},{key:'techniqueNote',title:'הנחיות לביצוע התרגיל',label:'הנחיות\nלביצוע',hint:'למשל, גב ישר, לרדת לאט',media:'techniqueMedia',add:'הוספת הנחיות',saved:'ההנחיות נשמרו',empty:'עדיין אין כאן הנחיות. אפשר לכתוב, לצלם תמונה או סרטון, או לבחור מהגלריה.',mediaLabel:'תמונות וסרטונים להנחיות — לא חובה'},{key:'note',title:'הערה כללית',label:'הערה\nכללית',hint:'למשל, לכל יד או כולל המוט',add:'כתיבת הערה',saved:'ההערה נשמרה',empty:'עדיין לא נכתבה כאן הערה.'}];
 var NOTE_LIMIT=500;
 var DEFAULT_EXERCISES=["לחיצת חזה","סקוואט","משיכת פולי עליון","חתירה בישיבה","לחיצת כתפיים","כפיפת מרפקים"];
 var DEFAULT_TYPES=["אימון A","אימון B","גוף מלא","מנוחה"];
@@ -202,12 +202,13 @@ function feedbackDialog(){
   if(navigator.share){navigator.share({title:subject,text:body}).then(function(){sent(msg);}).catch(function(){});}else{sent(msg);window.open('https://wa.me/?text='+encodeURIComponent(body),'_blank');}}
  dialog({title:'הערות למפתח האפליקציה',body:el('div',{class:'form'},[el('div',{class:'hint',text:'רעיון, בקשה או תקלה? כותבים כאן, אפשר לצרף תמונה של המכונה, ושולחים למפתח במייל.'}),t,strip,picker,camera,restore]),buttons:[{label:'סגירה',onClick:keep},{label:'שיתוף',onClick:function(){return send(false);}},{label:'שליחה במייל',onClick:function(){return send(true);}}]});
  paint();setTimeout(function(){t.focus();},50);}
-// Photos and videos of "הנחיות לביצוע" (4.0). They are too big for localStorage, so they live in IndexedDB under the same
-// names as in the Android app (media-<stamp>.jpg / .mp4 ...); the exercise record lists them in techniqueMedia.
+// Photos and videos of "כיוונון המכונה" (4.1) and "הנחיות לביצוע" (4.0). They are too big for localStorage, so they live in IndexedDB
+// under the same names as in the Android app (media-<stamp>.jpg / .mp4 ...); the exercise record lists them in machineMedia / techniqueMedia.
 var MEDIA_MAX=10,THUMB_EDGE=320,mediaDbPromise=null,mediaUrls={},mediaFresh={},lastMediaStamp=0;
 function mediaValid(name){return typeof name==='string'&&/^media-[0-9]{1,19}\.(jpg|mp4|3gp|webm|mkv|mov)$/.test(name);}
 function mediaIsVideo(name){return mediaValid(name)&&!/\.jpg$/.test(name);}
-function mediaList(r){var out=[];(r&&Array.isArray(r.techniqueMedia)?r.techniqueMedia:[]).forEach(function(n){if(mediaValid(n)&&out.indexOf(n)<0&&out.length<MEDIA_MAX)out.push(n);});return out;}
+function allMedia(r){var out=[];NOTES.forEach(function(def){if(def.media)out=out.concat(mediaList(r,def.media));});return out;}
+function mediaList(r,key){var out=[];(r&&key&&Array.isArray(r[key])?r[key]:[]).forEach(function(n){if(mediaValid(n)&&out.indexOf(n)<0&&out.length<MEDIA_MAX)out.push(n);});return out;}
 function mediaCount(names){var v=names.filter(mediaIsVideo).length,p=names.length-v;var pt=p<=0?'':p===1?'תמונה אחת':p+' תמונות',vt=v<=0?'':v===1?'סרטון אחד':v+' סרטונים';return !pt?vt:!vt?pt:pt+' ו'+vt;}
 function mediaStamp(){lastMediaStamp=Math.max(Date.now(),lastMediaStamp+1);return lastMediaStamp;}
 function mediaVideoName(type){var ext={'video/mp4':'mp4','video/3gpp':'3gp','video/webm':'webm','video/x-matroska':'mkv','video/quicktime':'mov'}[String(type||'').toLowerCase()]||'mp4';return 'media-'+mediaStamp()+'.'+ext;}
@@ -217,7 +218,7 @@ function mediaGet(name){return mediaTx('readonly',function(s){return s.get(name)
 function mediaPut(name,item){return mediaTx('readwrite',function(s){return s.put(item,name);});}
 function mediaDelete(names){names=names.filter(mediaValid);if(!names.length)return;names.forEach(function(n){var u=mediaUrls[n];if(u){if(u.full)URL.revokeObjectURL(u.full);if(u.thumb)URL.revokeObjectURL(u.thumb);delete mediaUrls[n];}delete mediaFresh[n];});mediaTx('readwrite',function(s){names.forEach(function(n){s.delete(n);});}).catch(function(){});}
 function mediaUrl(name,item,thumb){var u=mediaUrls[name]||(mediaUrls[name]={});var key=thumb?'thumb':'full',blob=thumb?item.thumb:item.blob;if(!blob)return null;if(!u[key])u[key]=URL.createObjectURL(blob);return u[key];}
-function mediaListed(){var listed={};Object.keys(S.records).forEach(function(n){mediaList(S.records[n]).forEach(function(m){listed[m]=true;});});return listed;}
+function mediaListed(){var listed={};Object.keys(S.records).forEach(function(n){allMedia(S.records[n]).forEach(function(m){listed[m]=true;});});return listed;}
 // Files no exercise lists any more (a deleted exercise, an import that replaced the data). A day's grace keeps files that a form
 // in another tab (or the installed app beside a browser tab) has added but not saved yet.
 function sweepMedia(){var listed=mediaListed(),old=Date.now()-24*60*60*1000,gone=[];mediaTx('readonly',function(s){var req=s.openCursor();req.onsuccess=function(){var c=req.result;if(!c)return;var item=c.value||{};if(!listed[c.key]&&!mediaFresh[c.key]&&!((item.created||0)>old))gone.push(c.key);c.continue();};return null;}).then(function(){mediaDelete(gone);}).catch(function(){});}
@@ -246,23 +247,23 @@ function viewMedia(found,start){var at=Math.max(0,Math.min(start,found.length-1)
  function keys(e){if(e.key==='Escape')close();}
  function show(){stop();var f=found[at],video=mediaIsVideo(f.name);counter.textContent=(video?'סרטון ':'תמונה ')+(at+1)+' מתוך '+found.length;prev.style.visibility=at>0?'visible':'hidden';next.style.visibility=at<found.length-1?'visible':'hidden';
   // the clip loops, so the movement can be watched again without touching the phone
-  if(video){var v=el('video',{src:mediaUrl(f.name,f.item,false),controls:'',loop:'',playsinline:'','aria-label':'סרטון מההנחיות לביצוע'});stage.appendChild(v);var p=v.play();if(p&&p.catch)p.catch(function(){});}
-  else stage.appendChild(el('img',{src:mediaUrl(f.name,f.item,false),alt:'תמונה מההנחיות לביצוע'}));}
+  if(video){var v=el('video',{src:mediaUrl(f.name,f.item,false),controls:'',loop:'',playsinline:'','aria-label':'סרטון של התרגיל'});stage.appendChild(v);var p=v.play();if(p&&p.catch)p.catch(function(){});}
+  else stage.appendChild(el('img',{src:mediaUrl(f.name,f.item,false),alt:'תמונה של התרגיל'}));}
  document.addEventListener('keydown',keys);document.body.appendChild(root);show();}
 // The photos and videos of one exercise while a form is open: files added here are deleted again if the form is closed without saving,
 // files removed here are deleted only once it is saved.
-function mediaEditor(start){var ed={items:start.slice(),added:[],removed:[],busy:0,closed:false};
+function mediaEditor(def,start){var ed={items:start.slice(),added:[],removed:[],busy:0,closed:false};
  var strip=el('div',{class:'photos media-strip'}),status=el('div',{class:'hint'});
  function input(accept,capture,multiple){var i=el('input',{type:'file',accept:accept,hidden:'',tabindex:'-1','aria-hidden':'true'});if(capture)i.setAttribute('capture','environment');if(multiple)i.multiple=true;i.addEventListener('change',function(){var files=Array.prototype.slice.call(i.files||[]);i.value='';take(files);});return i;}
  var photo=input('image/*',true,false),video=input('video/*',true,false),gallery=input('image/*,video/*',false,true);
  var adds=[btn('📷 צילום\nתמונה','inset',function(){photo.click();}),btn('🎥 צילום\nסרטון','inset',function(){video.click();}),btn('🖼 בחירה\nמהגלריה','inset',function(){gallery.click();})];
  function paint(){paintMediaStrip(strip,ed.items,function(n){ed.items=ed.items.filter(function(x){return x!==n;});if(ed.added.indexOf(n)>=0){ed.added=ed.added.filter(function(x){return x!==n;});mediaDelete([n]);}else ed.removed.push(n);paint();});
-  var full=ed.items.length>=MEDIA_MAX;status.textContent=ed.busy?'שומר…':full?'אפשר לשמור עד '+MEDIA_MAX+' תמונות וסרטונים לתרגיל':'';status.hidden=!status.textContent;adds.forEach(function(b){b.disabled=!!ed.busy||full;});}
+  var full=ed.items.length>=MEDIA_MAX;status.textContent=ed.busy?'שומר…':full?'אפשר לשמור כאן עד '+MEDIA_MAX+' תמונות וסרטונים':'';status.hidden=!status.textContent;adds.forEach(function(b){b.disabled=!!ed.busy||full;});}
  function take(files){if(!files.length)return;var room=MEDIA_MAX-ed.items.length,skipped=Math.max(0,files.length-room),failed=0;files=files.slice(0,Math.max(0,room));if(!files.length){paint();return;}ed.busy++;paint();
-  (function one(i){if(i>=files.length){ed.busy--;if(!ed.closed){paint();if(failed)toast(failed===1?'קובץ אחד לא נשמר. ייתכן שאין מספיק מקום בטלפון.':failed+' קבצים לא נשמרו. ייתכן שאין מספיק מקום בטלפון.');else if(skipped)toast('נשמרו רק '+MEDIA_MAX+' תמונות וסרטונים לתרגיל');}return;}
+  (function one(i){if(i>=files.length){ed.busy--;if(!ed.closed){paint();if(failed)toast(failed===1?'קובץ אחד לא נשמר. ייתכן שאין מספיק מקום בטלפון.':failed+' קבצים לא נשמרו. ייתכן שאין מספיק מקום בטלפון.');else if(skipped)toast('נשמרו רק '+MEDIA_MAX+' תמונות וסרטונים');}return;}
    storeMedia(files[i],function(name){if(!name)failed++;else if(ed.closed)mediaDelete([name]);else{ed.items.push(name);ed.added.push(name);}one(i+1);});})(0);}
- ed.view=el('div',{class:'media-editor'},[el('div',{class:'flabel',text:'תמונות וסרטונים להנחיות — לא חובה'}),strip,status,el('div',{class:'media-add'},adds),photo,video,gallery]);
- ed.writeTo=function(value){if(ed.items.length)value.techniqueMedia=ed.items.slice();else delete value.techniqueMedia;};
+ ed.view=el('div',{class:'media-editor'},[el('div',{class:'flabel',text:def.mediaLabel}),strip,status,el('div',{class:'media-add'},adds),photo,video,gallery]);
+ ed.writeTo=function(value){if(ed.items.length)value[def.media]=ed.items.slice();else delete value[def.media];};
  ed.commit=function(){ed.closed=true;mediaDelete(ed.removed);ed.removed=[];ed.added=[];};
  ed.discard=function(){if(ed.closed)return;ed.closed=true;var listed=mediaListed();mediaDelete(ed.added.filter(function(n){return !listed[n];}));ed.added=[];};
  strip.hidden=true;paint();return ed;}
@@ -338,13 +339,13 @@ function renderDetail(app){
  app.appendChild(trainingPanel(name));app.appendChild(gap(18));
  if(hasWeight(r)){var flagged=!!S.increase[name];app.appendChild(btn(flagged?'✓ לעלות משקל — ביטול הסימון':'＋ העלאת משקל','primary',function(){if(flagged)delete S.increase[name];else S.increase[name]=true;if(save()){render();toast(flagged?'הסימון בוטל':'נוספה תזכורת לעלות משקל');}}));}
 }
-function notesRow(name,r){return el('div',{class:'notes-row'},NOTES.map(function(def){var media=def.key==='techniqueNote'?mediaList(r):[],filled=!!(r&&String(r[def.key]||'').trim())||media.length>0;return el('button',{class:'note-btn'+(filled?' filled':''),type:'button',text:def.label+(media.length?' 📷':''),'aria-label':def.title+(filled?'':', עדיין ריק')+(media.length?', '+mediaCount(media):''),onclick:function(){showNote(name,def);}});}));}
-function showNote(name,def){var r=record(name),value=r?String(r[def.key]||'').trim():'',technique=def.key==='techniqueNote',media=technique?mediaList(r):[],empty=!value&&!media.length;var body=el('div',{});
- if(value||!media.length)body.appendChild(el('div',{class:'note-text'+(value?'':' none'),text:value||(technique?'עדיין אין כאן הנחיות. אפשר לכתוב, לצלם תמונה או סרטון, או לבחור מהגלריה.':'עדיין לא נכתבה כאן הערה.')}));
+function notesRow(name,r){return el('div',{class:'notes-row'},NOTES.map(function(def){var media=mediaList(r,def.media),filled=!!(r&&String(r[def.key]||'').trim())||media.length>0;return el('button',{class:'note-btn'+(filled?' filled':''),type:'button',text:def.label+(media.length?' 📷':''),'aria-label':def.title+(filled?'':', עדיין ריק')+(media.length?', '+mediaCount(media):''),onclick:function(){showNote(name,def);}});}));}
+function showNote(name,def){var r=record(name),value=r?String(r[def.key]||'').trim():'',media=mediaList(r,def.media),empty=!value&&!media.length;var body=el('div',{});
+ if(value||!media.length)body.appendChild(el('div',{class:'note-text'+(value?'':' none'),text:value||def.empty}));
  if(media.length){var caption=el('div',{class:'hint',text:mediaCount(media)+' · לחיצה פותחת במסך מלא'}),strip=el('div',{class:'photos media-strip'});body.appendChild(caption);body.appendChild(strip);paintMediaStrip(strip,media,null,function(found){if(found.length<media.length)caption.textContent=found.length?mediaCount(found.map(function(f){return f.name;}))+' · לחיצה פותחת במסך מלא':'התמונות והסרטונים נשמרו במכשיר אחר';});}
- dialog({title:def.title,body:body,buttons:[{label:empty?(technique?'הוספת הנחיות':'כתיבת הערה'):'עריכה',onClick:function(){setTimeout(function(){editNote(name,def);},0);}},{label:'סגירה'}]});}
-function editNote(name,def){var r=record(name);var input=noteField(def.hint,r?(r[def.key]||''):''),media=def.key==='techniqueNote'?mediaEditor(mediaList(r)):null;
- dialog({title:def.title,body:el('div',{class:'form'},[input,media?media.view:null]),onClose:function(){if(media)media.discard();},buttons:[{label:'ביטול'},{label:'שמירה',onClick:function(){clearError(input);var v=input.value.trim();if(v.length>NOTE_LIMIT){fieldError(input,'עד '+NOTE_LIMIT+' תווים');return false;}if(media&&media.busy){toast('רגע, התמונות והסרטונים עוד נשמרים');return false;}var value=Object.assign({},record(name)||{});value[def.key]=v;if(media)media.writeTo(value);S.records[name]=value;if(!save())return false;if(media)media.commit();render();toast(media?'ההנחיות נשמרו':'ההערה נשמרה');}}]});
+ dialog({title:def.title,body:body,buttons:[{label:empty?def.add:'עריכה',onClick:function(){setTimeout(function(){editNote(name,def);},0);}},{label:'סגירה'}]});}
+function editNote(name,def){var r=record(name);var input=noteField(def.hint,r?(r[def.key]||''):''),media=def.media?mediaEditor(def,mediaList(r,def.media)):null;
+ dialog({title:def.title,body:el('div',{class:'form'},[input,media?media.view:null]),onClose:function(){if(media)media.discard();},buttons:[{label:'ביטול'},{label:'שמירה',onClick:function(){clearError(input);var v=input.value.trim();if(v.length>NOTE_LIMIT){fieldError(input,'עד '+NOTE_LIMIT+' תווים');return false;}if(media&&media.busy){toast('רגע, התמונות והסרטונים עוד נשמרים');return false;}var value=Object.assign({},record(name)||{});value[def.key]=v;if(media)media.writeTo(value);S.records[name]=value;if(!save())return false;if(media)media.commit();render();toast(def.saved);}}]});
  setTimeout(function(){input.focus();},50);}
 function option(title,value,values,onPick,format){var sel=el('select',{class:'opt','aria-label':title});values.forEach(function(v){sel.appendChild(el('option',{value:String(v),text:format?format(v):String(v)}));});sel.value=String(value);sel.addEventListener('change',function(){onPick(parseInt(sel.value,10));});return el('div',{class:'opt-col'},[el('div',{class:'opt-title',text:title}),sel]);}
 function trainingPanel(name){
@@ -442,9 +443,9 @@ function exerciseDialog(existing,editFields){
  var selectedMuscles=exerciseMuscles(old).slice();var catBtn=null;var iconChoice={v:old&&Object.prototype.hasOwnProperty.call(old,'icon')?(old.icon||''):'auto'};
  if(editFields){form.appendChild(el('div',{class:'flabel',text:'קבוצות שרירים — אפשר לבחור כמה'}));catBtn=btn('','pick',function(){pickMuscles('קבוצות השרירים של התרגיל',selectedMuscles,'בחירה',null,function(chosen){selectedMuscles=chosen.slice();paintCat();return true;});});var paintCat=function(){catBtn.textContent='';if(selectedMuscles.length){var line=muscleLine('',selectedMuscles,22);while(line.firstChild)catBtn.appendChild(line.firstChild);}else catBtn.textContent='בחירת קבוצות שרירים';};paintCat();form.appendChild(catBtn);form.appendChild(el('div',{class:'flabel',text:'אייקון — לא חובה'}));form.appendChild(iconButton(false,iconChoice,nameInput));}
  form.appendChild(el('div',{class:'flabel',text:'משקל בק״ג'}));var amount=field('למשל 20',hasWeight(old)?weightText(old):'',true);form.appendChild(amount);
- var media=editFields?mediaEditor(mediaList(old)):null;
- var noteInputs=NOTES.map(function(def){if(!editFields&&def.key!=='note')return null;form.appendChild(el('div',{class:'flabel',text:def.title+' — לא חובה'}));var t=noteField(def.hint,old?(old[def.key]||''):'');form.appendChild(t);if(media&&def.key==='techniqueNote')form.appendChild(media.view);return t;});
- dialog({title:!existing?'תרגיל חדש':(editFields?'עריכת תרגיל':'עדכון משקל'),body:form,onClose:function(){if(media)media.discard();},buttons:[{label:'ביטול'},{label:'שמירה',onClick:function(){
+ var media=[];
+ var noteInputs=NOTES.map(function(def){if(!editFields&&def.key!=='note')return null;form.appendChild(el('div',{class:'flabel',text:def.title+' — לא חובה'}));var t=noteField(def.hint,old?(old[def.key]||''):'');form.appendChild(t);if(editFields&&def.media){var ed=mediaEditor(def,mediaList(old,def.media));media.push(ed);form.appendChild(ed.view);}return t;});
+ dialog({title:!existing?'תרגיל חדש':(editFields?'עריכת תרגיל':'עדכון משקל'),body:form,onClose:function(){media.forEach(function(ed){ed.discard();});},buttons:[{label:'ביטול'},{label:'שמירה',onClick:function(){
   clearError(nameInput);clearError(amount);noteInputs.forEach(function(t){if(t)clearError(t);});
   var n=nameInput.value.trim(),raw=amount.value.trim().replace(',','.'),w=null;
   if(raw){w=Number(raw);if(!isFinite(w)){fieldError(amount,'יש להזין משקל תקין');return false;}if(w<0||w>2000){fieldError(amount,'משקל בין 0 ל־2,000 ק״ג');return false;}}
@@ -452,13 +453,13 @@ function exerciseDialog(existing,editFields){
   if(!n||n.length>80){fieldError(nameInput,'יש להזין שם תרגיל עד 80 תווים');return false;}
   if(n!==existing&&(S.records[n]||(DEFAULT_EXERCISES.indexOf(n)>=0&&S.deleted.indexOf(n)<0))){fieldError(nameInput,'כבר קיים תרגיל בשם הזה');return false;}
   for(var i=0;i<noteInputs.length;i++){if(noteInputs[i]&&noteInputs[i].value.trim().length>NOTE_LIMIT){fieldError(noteInputs[i],'עד '+NOTE_LIMIT+' תווים');return false;}}
-  if(media&&media.busy){toast('רגע, התמונות והסרטונים עוד נשמרים');return false;}
-  var value=Object.assign({},old||{});value.weight=w;NOTES.forEach(function(def,i){if(noteInputs[i])value[def.key]=noteInputs[i].value.trim();});value.categories=selectedMuscles.slice();value.category=selectedMuscles[0]||'';if(editFields){if(iconChoice.v==='auto')delete value.icon;else value.icon=iconChoice.v;}if(media)media.writeTo(value);
+  if(media.some(function(ed){return ed.busy;})){toast('רגע, התמונות והסרטונים עוד נשמרים');return false;}
+  var value=Object.assign({},old||{});value.weight=w;NOTES.forEach(function(def,i){if(noteInputs[i])value[def.key]=noteInputs[i].value.trim();});value.categories=selectedMuscles.slice();value.category=selectedMuscles[0]||'';if(editFields){if(iconChoice.v==='auto')delete value.icon;else value.icon=iconChoice.v;}media.forEach(function(ed){ed.writeTo(value);});
   var flagKey=existing||n;var keepFlag=!!S.increase[flagKey]&&(!hasWeight(old)||w==null||w<=old.weight);
   if(existing&&existing!==n)renameExercise(existing,n);
   S.records[n]=value;S.deleted=S.deleted.filter(function(x){return x!==n;});if(keepFlag)S.increase[n]=true;else delete S.increase[n];
   if(!save())return false;
-  if(media)media.commit();
+  media.forEach(function(ed){ed.commit();});
   if(editFields&&existing){if(view==='detail')go('home');else render();}else if(view==='detail'){selected=n;render();}else go('detail',{selected:n});
   toast('התרגיל נשמר');}}]});
  setTimeout(function(){(editFields?nameInput:amount).focus();},50);
@@ -471,7 +472,7 @@ function renameExercise(o,n){delete S.records[o];if(S.deleted.indexOf(o)<0)S.del
  if(S.timer[o]){S.timer[n]=S.timer[o];delete S.timer[o];}
  if(S.increase[o]){S.increase[n]=true;delete S.increase[o];}
  S.exerciseOrder=renamedList(S.exerciseOrder,o,n);if(S.lastTimerExercise===o)S.lastTimerExercise=n;}
-function deleteExercise(name){var media=mediaList(record(name));confirmDialog('מחיקת תרגיל','למחוק את ״'+name+'״ ואת המשקל ששמרת?'+(media.length?' גם התמונות והסרטונים שלו יימחקו.':''),'מחיקה',function(){delete S.records[name];if(S.deleted.indexOf(name)<0)S.deleted.push(name);delete S.increase[name];if(S.lastTimerExercise===name)S.lastTimerExercise='';if(save()){mediaDelete(media);if(view==='detail')go('home');else render();toast('התרגיל נמחק');}});}
+function deleteExercise(name){var media=allMedia(record(name));confirmDialog('מחיקת תרגיל','למחוק את ״'+name+'״ ואת המשקל ששמרת?'+(media.length?' גם התמונות והסרטונים שלו יימחקו.':''),'מחיקה',function(){delete S.records[name];if(S.deleted.indexOf(name)<0)S.deleted.push(name);delete S.increase[name];if(S.lastTimerExercise===name)S.lastTimerExercise='';if(save()){mediaDelete(media);if(view==='detail')go('home');else render();toast('התרגיל נמחק');}});}
 
 function enableChipReorder(strip,onSave){
  var timer=null,sx=0,sy=0,dragging=null,clone=null,ox=0,lastX=0,startOrder=null,auto=0,raf=null;
@@ -513,7 +514,7 @@ function notices(app){
  var how=isIOS()?'בסאפרי: לוחצים על כפתור השיתוף (ריבוע עם חץ למעלה) ואז על ״הוספה למסך הבית״.':'בתפריט הדפדפן בוחרים ״הוספה למסך הבית״ או ״התקנת אפליקציה״.';
  app.appendChild(el('div',{class:'notice'},[el('div',{class:'notice-title',text:'כדאי להוסיף למסך הבית'}),el('div',{class:'notice-text',text:how+' ככה האפליקציה נפתחת כמו אפליקציה רגילה, עובדת בלי אינטרנט והנתונים נשמרים.'}),btn('הבנתי, לא להציג שוב','compact lime',function(){S.hideInstallHint=true;save();render();})]));
 }
-function backupSection(app){var sec=el('div',{class:'backup'});sec.appendChild(el('div',{class:'hint',text:'גיבוי: הנתונים נשמרים רק בדפדפן הזה. אפשר לייצא לקובץ ולייבא במכשיר אחר. התמונות והסרטונים של ההנחיות לא נכללים בקובץ.'}));
+function backupSection(app){var sec=el('div',{class:'backup'});sec.appendChild(el('div',{class:'hint',text:'גיבוי: הנתונים נשמרים רק בדפדפן הזה. אפשר לייצא לקובץ ולייבא במכשיר אחר. התמונות והסרטונים לא נכללים בקובץ.'}));
  var file=el('input',{type:'file',accept:'application/json,.json',hidden:''});file.addEventListener('change',function(){var f=file.files[0];if(!f)return;var reader=new FileReader();reader.onload=function(){importData(String(reader.result));};reader.readAsText(f);file.value='';});
  sec.appendChild(el('div',{class:'backup-row'},[btn('ייצוא נתונים','menu',exportData),btn('ייבוא מקובץ','menu',function(){file.click();})]));sec.appendChild(file);app.appendChild(sec);}
 function exportData(){var json=JSON.stringify(S,null,1);try{var blob=new Blob([json],{type:'application/json'});var url=URL.createObjectURL(blob);var a=el('a',{href:url,download:'next-set-'+todayKey()+'.json'});document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},3000);}catch(e){}
