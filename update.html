@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>עדכון · הסט הבא</title>
+<meta name="description" content="עדכון אפליקציית הסט הבא לגרסה האחרונה: הורדה לאנדרואיד, ובאייפון גרסת הרשת מתעדכנת לבד.">
+<meta name="theme-color" content="#121715">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{--bg:#121715;--card:#1C2420;--line:#2c3a33;--text:#F2F5F1;--sage:#C0D0BA;--gray:#A8B4AC;--lime:#CEFA69;--relevant:#222d1d}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+main{max-width:520px;margin:0 auto;padding:28px 16px 48px}
+header{display:flex;align-items:center;gap:14px}
+header img{width:56px;height:56px;border-radius:14px}
+h1{font-size:28px;line-height:1.2;margin:0}
+.version{color:var(--sage);font-size:16px;margin:10px 0 22px}
+.version b{color:var(--lime)}
+.get{display:block;text-align:center;text-decoration:none;background:var(--lime);color:var(--bg);font-weight:700;font-size:20px;border-radius:20px;padding:20px 12px;box-shadow:0 0 0 4px rgba(206,250,105,.2),0 0 24px rgba(206,250,105,.4)}
+.get small{display:block;font-weight:400;font-size:14px;margin-top:2px}
+section{background:var(--card);border-radius:17px;padding:16px 18px;margin-top:16px}
+h2{font-size:19px;margin:0 0 8px}
+ol{margin:0;padding-inline-start:22px;color:var(--sage)}
+li{margin:6px 0}
+li b{color:var(--text)}
+.kept{color:var(--lime);font-size:15px;margin:10px 0 0}
+p{color:var(--sage);margin:0}
+a{color:var(--lime)}
+.web{display:block;text-align:center;text-decoration:none;margin-top:12px;border:1px solid var(--line);border-radius:17px;padding:14px 12px;color:var(--lime);font-weight:700}
+footer{color:var(--gray);font-size:14px;margin-top:28px;text-align:center}
+</style>
+</head>
+<body>
+<main>
+<header><img src="icon-192.png" alt=""><h1>עדכון הסט הבא</h1></header>
+<div class="version">הגרסה האחרונה: <b id="version">6.1</b></div>
+
+<a class="get" id="get" href="next-set.apk" download>⬇ הורדת הגרסה החדשה לאנדרואיד<small id="file">next-set.apk</small></a>
+
+<section>
+<h2>איך מעדכנים באנדרואיד</h2>
+<ol>
+<li>לוחצים על הכפתור הירוק, והקובץ יורד לטלפון.</li>
+<li>פותחים את הקובץ שירד (מההתראה או מתיקיית ההורדות) ובוחרים <b>עדכון</b>.</li>
+<li>אם הטלפון שואל, מאשרים <b>התקנה ממקור זה</b> וחוזרים אחורה לעדכון.</li>
+</ol>
+<p class="kept">✓ המשקלים, התרגילים והתוכניות נשארים כמו שהם.</p>
+</section>
+
+<section>
+<h2>באייפון</h2>
+<p>לא צריך לעשות כלום: גרסת הרשת מתעדכנת לבד בפעם הבאה שפותחים אותה עם אינטרנט.</p>
+<a class="web" href="./">פתיחת הסט הבא לאייפון</a>
+</section>
+
+<footer>הסט הבא · <a href="privacy.html">מדיניות פרטיות</a></footer>
+</main>
+<script>
+// The version and the file come from the web app itself, so this page never needs an edit: a numbered file
+// (next-set-6.1.apk) is never an old copy from a cache.
+fetch('index.html',{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){
+ var m=/var VERSION='([0-9.]+)'/.exec(t);if(!m)return;var v=m[1],name='next-set-'+v+'.apk';
+ document.getElementById('version').textContent=v;var a=document.getElementById('get');a.href=name;a.setAttribute('download',name);document.getElementById('file').textContent=name;
+}).catch(function(){});
+</script>
+</body>
+</html>
