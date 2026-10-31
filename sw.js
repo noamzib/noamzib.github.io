@@ -1,6 +1,6 @@
 // הסט הבא — service worker for the web version. Caches the app shell so the page opens offline.
-var CACHE='nextset-web-6.6';
-var SHELL=['./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./maskable-512.png'];
+var CACHE='nextset-web-8.1';
+var SHELL=['./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./maskable-512.png','./coach-avatar.png'];
 self.addEventListener('install',function(e){e.waitUntil(caches.open(CACHE).then(function(c){return Promise.all(SHELL.map(function(u){return c.add(u).catch(function(){});}));}).then(function(){return self.skipWaiting();}));});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(keys){return Promise.all(keys.filter(function(k){return k!==CACHE;}).map(function(k){return caches.delete(k);}));}).then(function(){return self.clients.claim();}));});
 // Pages and the manifest: network first so an update shows on the next open; cached copy when offline. Icons: cache first.
