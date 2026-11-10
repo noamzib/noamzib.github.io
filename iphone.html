@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>התקנה · הסט הבא</title>
+<meta name="description" content="התקנת אפליקציית הסט הבא: באייפון ישר מהאתר למסך הבית, באנדרואיד הורדה בלחיצה. בחינם.">
+<meta property="og:title" content="הסט הבא · התקנת האפליקציה">
+<meta property="og:description" content="לוחצים, מתקינים ומתאמנים. באייפון ובאנדרואיד, בחינם.">
+<meta property="og:image" content="https://noamzib.github.io/icon-512.png">
+<meta property="og:url" content="https://noamzib.github.io/iphone.html">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#121715">
+<!-- Added to the home screen from this page, the icon must still open the app: same name, icon and manifest as index.html,
+     and a launch from the home screen (standalone) goes straight to the app below. -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="הסט הבא">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<script>
+(function(){try{if(navigator.standalone===true||(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches))location.replace('./');}catch(e){}})();
+</script>
+<style>
+:root{--bg:#121715;--card:#1C2420;--line:#2c3a33;--text:#F2F5F1;--sage:#C0D0BA;--gray:#A8B4AC;--lime:#CEFA69;--relevant:#222d1d}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.55 -apple-system,system-ui,"Segoe UI",Arial,sans-serif;-webkit-text-size-adjust:100%}
+main{max-width:520px;margin:0 auto;padding:28px 16px 48px}
+body.hint main{padding-bottom:130px}
+header{display:flex;align-items:center;gap:14px}
+header img{width:64px;height:64px;border-radius:16px}
+h1{font-size:28px;line-height:1.2;margin:0}
+.tag{color:var(--sage);font-size:15px;margin:2px 0 0}
+.lead{color:var(--sage);margin:20px 0 4px}
+.lead b{color:var(--text)}
+[hidden]{display:none!important}
+section{background:var(--card);border-radius:18px;padding:18px;margin-top:16px}
+h2{font-size:21px;margin:0 0 10px}
+ol.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+ol.steps li{counter-increment:s;position:relative;padding:12px 52px 12px 0;border-top:1px solid var(--line)}
+ol.steps li:first-child{border-top:0;padding-top:4px}
+ol.steps li::before{content:counter(s);position:absolute;right:0;top:10px;width:38px;height:38px;border-radius:50%;background:var(--lime);color:var(--bg);font-weight:800;font-size:20px;display:flex;align-items:center;justify-content:center}
+ol.steps li:first-child::before{top:2px}
+ol.steps b{font-size:18px}
+ol.steps small{display:block;color:var(--gray);font-size:15px;margin-top:4px}
+.ico{float:left;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9px;background:#2a3530;margin:0 10px 4px 0}
+.ico svg{width:22px;height:22px;stroke:#5aa9ff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.get{display:block;text-align:center;text-decoration:none;background:var(--lime);color:var(--bg);font-weight:800;font-size:21px;border-radius:20px;padding:20px 12px;margin:6px 0 16px;border:0;width:100%;font-family:inherit;cursor:pointer;box-shadow:0 0 0 4px rgba(206,250,105,.18)}
+.get small{display:block;font-weight:400;font-size:14px;margin-top:2px}
+.soft{display:block;text-align:center;color:var(--lime);font-size:16px;margin-top:14px}
+.done{color:var(--lime);font-size:15px;margin:12px 0 0}
+.url{direction:ltr;text-align:center;font-size:19px;font-weight:700;color:var(--text);background:#141b18;border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0 14px;word-break:break-all;user-select:all;-webkit-user-select:all}
+p{color:var(--sage);margin:0}
+a{color:var(--lime)}
+footer{text-align:center;color:var(--gray);font-size:15px;margin-top:24px}
+footer a{margin:0 8px}
+.arrow{position:fixed;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;pointer-events:none;animation:bob 1.1s ease-in-out infinite}
+.arrow span{background:var(--lime);color:var(--bg);font-weight:800;font-size:16px;border-radius:14px;padding:8px 16px;box-shadow:0 4px 18px rgba(0,0,0,.5)}
+.arrow i{display:block;width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-top:20px solid var(--lime);margin-top:-1px}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(9px)}}
+@media (prefers-reduced-motion:reduce){.arrow{animation:none}}
+</style>
+</head>
+<body>
+<main>
+<header>
+ <img src="icon-192.png" alt="">
+ <div><h1>הסט הבא</h1><p class="tag">אימונים בעידן ה-AI</p></div>
+</header>
+
+<!-- iPhone in Safari -->
+<section id="ios" hidden>
+ <h2>התקנה באייפון</h2>
+ <p>באייפון האפליקציה נכנסת ישר מהאתר למסך הבית, בלי App Store ובחינם. <b style="color:var(--text);white-space:nowrap">3 צעדים:</b></p>
+ <ol class="steps" style="margin-top:14px">
+  <li><b>לוחצים על כפתור השיתוף</b><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M7 10H5v11h14V10h-2"/></svg></span>
+   <small>הוא בסרגל של סאפרי למטה. באייפון עם iOS 26 לוחצים קודם על <b style="font-size:15px;color:var(--text)">⋯</b> ואז על ״שיתוף״.</small></li>
+  <li><b>בוחרים ״הוספה למסך הבית״</b><span class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg></span>
+   <small>אם לא רואים אותו, גוללים קצת למטה או לוחצים ״עוד״.</small></li>
+  <li><b>לוחצים ״הוספה״ בפינה למעלה</b>
+   <small>זהו. האייקון של הסט הבא מופיע במסך הבית, נפתח כמו אפליקציה רגילה ועובד גם בלי אינטרנט.</small></li>
+ </ol>
+ <p class="done">לא מוצאים ״הוספה למסך הבית״? כנראה הקישור נפתח בתוך אפליקציה אחרת: לוחצים על סמל המצפן או על ״פתיחה בסאפרי״, וממשיכים משם.</p>
+ <a class="soft" href="./">רק לנסות קודם, בלי להתקין ←</a>
+</section>
+
+<!-- iPhone inside another app (WhatsApp, Instagram, Chrome…): adding to the home screen works only from Safari -->
+<section id="iosOther" hidden>
+ <h2>קודם פותחים בסאפרי</h2>
+ <p>הקישור נפתח בתוך אפליקציה אחרת, ומשם אי אפשר להתקין. פותחים אותו בסאפרי, הדפדפן הרגיל של האייפון:</p>
+ <ol class="steps" style="margin-top:14px">
+  <li><b>לוחצים על ⋯ או על סמל המצפן</b><small>ובוחרים ״פתיחה בסאפרי״ או ״פתיחה בדפדפן״.</small></li>
+  <li><b>או: מעתיקים את הקישור</b><small>פותחים את סאפרי, מדביקים בשורת הכתובת ונכנסים.</small>
+   <button class="get copy" type="button" style="margin:12px 0 0;font-size:18px;padding:14px">העתקת הקישור</button></li>
+ </ol>
+ <p class="done">בסאפרי יופיעו 3 צעדים קצרים להתקנה.</p>
+</section>
+
+<!-- Android -->
+<section id="android" hidden>
+ <h2>התקנה באנדרואיד</h2>
+ <a class="get" href="next-set.apk" download>הורדת האפליקציה<small class="ver">קובץ התקנה לאנדרואיד</small></a>
+ <ol class="steps">
+  <li><b>פותחים את הקובץ שירד</b><small>מההתראה למעלה או מתיקיית ההורדות.</small></li>
+  <li><b>אם הטלפון שואל, מאשרים</b><small>״לאפשר התקנה ממקור זה״, וחוזרים אחורה.</small></li>
+  <li><b>לוחצים ״התקנה״</b><small>זהו. הסט הבא נמצא עם שאר האפליקציות בטלפון.</small></li>
+ </ol>
+</section>
+
+<!-- Computer -->
+<section id="desk" hidden>
+ <h2>פותחים את הקישור בטלפון</h2>
+ <p>ההתקנה נעשית בטלפון. שולחים לעצמכם את הקישור הזה ופותחים אותו שם, באייפון או באנדרואיד:</p>
+ <div class="url">noamzib.github.io/iphone.html</div>
+ <button class="get copy" type="button">העתקת הקישור</button>
+ <a class="soft" href="./">או לנסות את האפליקציה כאן במחשב ←</a>
+</section>
+
+<footer>
+ <a href="#ios" data-view="ios">יש לי אייפון</a>·<a href="#android" data-view="android">יש לי אנדרואיד</a>·<a href="privacy.html">פרטיות</a>
+</footer>
+</main>
+<div class="arrow" id="arrow" hidden><span>כפתור השיתוף בסרגל למטה</span><i></i></div>
+<script>
+(function(){
+ var ua=navigator.userAgent||'';
+ var ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1);
+ var android=/Android/i.test(ua);
+ // Another browser or an app's built-in browser on the iPhone: no "Add to Home Screen" there (or not reliably), so Safari first.
+ var inApp=/CriOS|FxiOS|EdgiOS|OPiOS|OPT\/|GSA\/|YaBrowser|DuckDuckGo|FBAN|FBAV|FB_IAB|FBIOS|Instagram|Line\/|Snapchat|TikTok|musical_ly|Bytedance|Twitter|LinkedInApp|Telegram|WhatsApp/.test(ua)||(ios&&!/Safari\//.test(ua));
+ function show(v){
+  ['ios','iosOther','android','desk'].forEach(function(id){document.getElementById(id).hidden=(id!==v);});
+  var hint=(v==='ios'&&ios&&!inApp);
+  document.getElementById('arrow').hidden=!hint;
+  document.body.classList.toggle('hint',hint);
+ }
+ var pick=(location.hash||'').slice(1);
+ if(!/^(ios|iosOther|android|desk)$/.test(pick))pick=ios?(inApp?'iosOther':'ios'):android?'android':'desk';
+ show(pick);
+ Array.prototype.forEach.call(document.querySelectorAll('[data-view]'),function(a){
+  a.addEventListener('click',function(e){e.preventDefault();var v=a.getAttribute('data-view');if(v==='ios'&&ios&&inApp)v='iosOther';show(v);window.scrollTo(0,0);});
+ });
+ // Hide the bouncing arrow once the steps were scrolled past (the reader found the toolbar).
+ window.addEventListener('scroll',function(){if(window.scrollY>260)document.getElementById('arrow').hidden=true;},{passive:true});
+ var link='https://noamzib.github.io/iphone.html';
+ Array.prototype.forEach.call(document.querySelectorAll('.copy'),function(b){
+  b.addEventListener('click',function(){
+   function ok(){var t=b.textContent;b.textContent='הקישור הועתק ✓';setTimeout(function(){b.textContent=t;},2200);}
+   function old(){var i=document.createElement('textarea');i.value=link;i.setAttribute('readonly','');i.style.position='fixed';i.style.opacity='0';document.body.appendChild(i);i.select();i.setSelectionRange(0,link.length);try{document.execCommand('copy');ok();}catch(e){}document.body.removeChild(i);}
+   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(link).then(ok,old);else old();
+  });
+ });
+ // The current Android version on the download button.
+ try{fetch('version.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(j){if(j&&j.version){var s=document.querySelector('#android .ver');if(s)s.textContent='גרסה '+j.version+' · קובץ התקנה לאנדרואיד';}}).catch(function(){});}catch(e){}
+ // The offline cache of the app, so an icon added from this page opens even without internet.
+ if('serviceWorker' in navigator){try{navigator.serviceWorker.register('sw.js').catch(function(){});}catch(e){}}
+})();
+</script>
+</body>
+</html>
